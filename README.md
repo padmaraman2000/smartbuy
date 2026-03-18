@@ -31,9 +31,9 @@ Dashboard → Train Search → Train Listing (multiple classes) → Booking Conf
 - 🎫 E-ticket confirmation page
 
 ## 🔑 Demo Login
-- Email: john.doe@techcorp.com
-- Password: password123
-- Company Code: TECHCORP
+- Email: ram.test@pssmt.com
+- Password: ram@123
+- Company Code: PSSMT
 
 ## 🚀 Live App
 
