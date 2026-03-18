@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SmartBuy — Corporate Travel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4ff;--surface:#fff;--surface2:#f7f9ff;--border:#e2e8f0;--border2:#cbd5e1;
+  --ink:#0f172a;--ink2:#475569;--ink3:#94a3b8;
+  --primary:#1e40af;--primary-light:#dbeafe;--primary-dark:#1e3a8a;
+  --accent:#f59e0b;--accent-light:#fef3c7;
+  --green:#16a34a;--green-light:#dcfce7;
+  --red:#dc2626;--red-light:#fee2e2;
+  --orange:#ea580c;--orange-light:#ffedd5;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+  --shadow:0 1px 3px #0000001a,0 1px 2px #0000000f;
+  --shadow-md:0 4px 6px #0000001a,0 2px 4px #00000010;
+  --shadow-lg:0 10px 15px #0000001a,0 4px 6px #00000010;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);min-height:100vh}
+.page{display:none!important}.page.active{display:block!important}
+
+/* TOPBAR */
+.topbar{background:var(--primary);padding:0 24px;height:56px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--shadow-md)}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:1.15rem;letter-spacing:-.5px;cursor:pointer}
+.logo-icon{width:32px;height:32px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-user{color:#bfdbfe;font-size:.82rem;font-weight:500}
+.nav-btn{color:#bfdbfe;background:transparent;border:1px solid #3b82f6;padding:6px 13px;border-radius:6px;
+  cursor:pointer;font-size:.78rem;font-family:inherit;transition:all .2s}
+.nav-btn:hover{background:#1d4ed8;color:#fff}
+.nav-btn.active-nav{background:#fff;color:var(--primary);border-color:#fff;font-weight:700}
+.back-btn{color:#bfdbfe;background:transparent;border:none;cursor:pointer;font-size:.85rem;font-family:inherit;transition:color .2s;display:flex;align-items:center;gap:5px}
+.back-btn:hover{color:#fff}
+
+/* BREADCRUMB */
+.breadcrumb{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 24px;
+  display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--ink3);flex-wrap:wrap}
+.breadcrumb .bc{color:var(--primary);cursor:pointer;font-weight:500}.breadcrumb .bc:hover{text-decoration:underline}
+
+/* LOGIN */
+.login-wrap{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#1e3a8a,#1e40af,#2563eb);padding:24px}
+.login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:var(--shadow-lg)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo h1{font-size:1.8rem;font-weight:800;color:var(--primary);letter-spacing:-1px}
+.login-logo p{color:var(--ink3);font-size:.85rem;margin-top:4px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:.78rem;font-weight:600;color:var(--ink2);margin-bottom:6px;letter-spacing:.3px}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:inherit;font-size:.9rem;outline:none;transition:border-color .2s;background:#fff}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px #dbeafe}
+.btn-primary{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;
+  font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.login-hint{text-align:center;font-size:.78rem;color:var(--ink3);margin-top:16px}
+
+/* HOME */
+.home-hero{background:linear-gradient(135deg,#1e40af,#3b82f6);padding:32px 24px 80px;color:#fff}
+.home-hero h2{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.home-hero p{opacity:.8;font-size:.9rem}
+.home-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;
+  padding:0 24px;margin-top:-48px;max-width:1000px;margin-left:auto;margin-right:auto}
+.travel-card{background:#fff;border-radius:12px;padding:20px;text-align:center;cursor:pointer;
+  box-shadow:var(--shadow-md);transition:all .3s;border:2px solid transparent}
+.travel-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
+.travel-card .tc-icon{font-size:2.2rem;margin-bottom:10px}
+.travel-card h3{font-size:.95rem;font-weight:700}
+.travel-card p{font-size:.75rem;color:var(--ink3);margin-top:4px}
+.policy-banner{background:#fff;border:1.5px solid var(--primary-light);border-radius:10px;
+  padding:16px 20px;margin:24px auto;display:flex;align-items:center;gap:12px;max-width:952px}
+.recent-bk{max-width:1000px;margin:0 auto 24px;padding:0 24px}
+.sec-ttl{font-size:1rem;font-weight:700;margin-bottom:12px}
+.bk-row{background:#fff;border-radius:8px;padding:14px 16px;margin-bottom:8px;
+  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);cursor:pointer;transition:box-shadow .2s}
+.bk-row:hover{box-shadow:var(--shadow-md)}
+.bk-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.bk-icon.fl{background:var(--primary-light)}.bk-icon.ht{background:var(--green-light)}
+.bk-icon.bs{background:var(--orange-light)}.bk-icon.tr{background:var(--purple-light)}
+.bk-info{flex:1}.bk-title{font-size:.88rem;font-weight:600}.bk-sub{font-size:.75rem;color:var(--ink3);margin-top:2px}
+.bk-st{font-size:.72rem;font-weight:600;padding:3px 8px;border-radius:20px}
+.bk-st.ok{background:var(--green-light);color:var(--green)}.bk-st.pnd{background:var(--accent-light);color:var(--orange)}
+
+/* SEARCH FORMS */
+.search-container{max-width:1000px;margin:0 auto;padding:24px}
+.search-card{background:#fff;border-radius:12px;padding:24px;box-shadow:var(--shadow-md);margin-bottom:20px}
+.search-card h3{font-size:1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.trip-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.trip-btn{padding:7px 16px;border:1.5px solid var(--border);border-radius:20px;background:transparent;
+  font-family:inherit;font-size:.8rem;cursor:pointer;transition:all .2s;color:var(--ink2)}
+.trip-btn.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary);font-weight:600}
+.s-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin-bottom:16px}
+.s-field{display:flex;flex-direction:column;gap:5px}
+.s-field label{font-size:.75rem;font-weight:600;color:var(--ink2);letter-spacing:.3px}
+.s-field input,.s-field select{padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:inherit;font-size:.88rem;outline:none;transition:border-color .2s;background:#fff}
+.s-field input:focus,.s-field select:focus{border-color:var(--primary)}
+.swap-btn{align-self:flex-end;padding:10px;border:1.5px solid var(--border);border-radius:8px;
+  background:#fff;cursor:pointer;font-size:1rem;transition:all .2s}
+.swap-btn:hover{border-color:var(--primary);background:var(--primary-light)}
+.btn-search{padding:11px 28px;background:var(--primary);color:#fff;border:none;border-radius:8px;
+  font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-search:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.info-alert{background:var(--primary-light);border-left:3px solid var(--primary);border-radius:6px;
+  padding:10px 14px;font-size:.8rem;color:var(--primary);margin-bottom:14px}
+
+/* LISTING */
+.list-layout{display:grid;grid-template-columns:240px 1fr;gap:20px;max-width:1100px;margin:0 auto;padding:20px 24px}
+.filter-box{background:#fff;border-radius:10px;padding:16px;box-shadow:var(--shadow);height:fit-content;position:sticky;top:76px}
+.filter-title{font-size:.85rem;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.filter-sec{margin-bottom:16px}
+.filter-sec h4{font-size:.75rem;font-weight:600;color:var(--ink2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.f-check{display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer}
+.f-check input{accent-color:var(--primary)}.f-check label{font-size:.8rem;color:var(--ink2);cursor:pointer}
+.res-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.res-cnt{font-size:.85rem;color:var(--ink2)}
+.sort-sel{padding:6px 10px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.78rem;outline:none;background:#fff}
+
+/* FLIGHT CARD */
+.fl-card{background:#fff;border-radius:10px;padding:16px;margin-bottom:10px;
+  box-shadow:var(--shadow);cursor:pointer;transition:all .2s;border:2px solid transparent}
+.fl-card:hover{box-shadow:var(--shadow-md);border-color:var(--primary-light)}
+.fc-row{display:flex;align-items:center;gap:12px}
+.air-logo{width:36px;height:36px;border-radius:8px;background:var(--primary-light);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.fc-times{display:flex;align-items:center;gap:16px;flex:1}
+.fc-t{text-align:center}.fc-t .t{font-size:1.1rem;font-weight:800}.fc-t .ap{font-size:.7rem;color:var(--ink3);margin-top:2px}
+.fc-dur{text-align:center;flex:1}.fc-dur .d{font-size:.75rem;color:var(--ink3)}
+.fc-dur .ln{height:1px;background:var(--border);position:relative;margin:4px 0}
+.fc-dur .ln::before,.fc-dur .ln::after{content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--border2);position:absolute;top:-2.5px}
+.fc-dur .ln::before{left:0}.fc-dur .ln::after{right:0}
+.fc-dur .st{font-size:.72rem;font-weight:600}
+.fc-price{text-align:right}.fc-price .pr{font-size:1.2rem;font-weight:800;color:var(--primary)}
+.fc-price .pp{font-size:.7rem;color:var(--ink3)}
+.fc-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.fc-tag{font-size:.68rem;padding:2px 8px;border-radius:4px;font-weight:500}
+.fc-tag.rf{background:var(--green-light);color:var(--green)}.fc-tag.ml{background:var(--primary-light);color:var(--primary)}
+.fc-tag.ch{background:var(--accent-light);color:var(--orange)}.fc-tag.fs{background:var(--purple-light);color:var(--purple)}
+.btn-sel{padding:7px 16px;background:var(--primary);color:#fff;border:none;border-radius:6px;
+  font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-sel:hover{background:var(--primary-dark)}
+
+/* DETAIL LAYOUT */
+.det-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;max-width:1000px;margin:0 auto;padding:20px 24px}
+.det-card{background:#fff;border-radius:10px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.det-card h3{font-size:.95rem;font-weight:700;margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.tl-row{display:flex;gap:16px;align-items:flex-start}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--primary);flex-shrink:0;margin-top:5px}
+.tl-line{width:2px;background:var(--border);flex-shrink:0;height:40px;margin-left:5px}
+.tl-info h4{font-size:.9rem;font-weight:700}.tl-info p{font-size:.78rem;color:var(--ink3)}
+.am-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.am-item{display:flex;align-items:center;gap:8px;padding:8px;background:var(--surface2);border-radius:6px;font-size:.78rem;color:var(--ink2)}
+.pol-table{width:100%;font-size:.82rem;border-collapse:collapse}
+.pol-table th{text-align:left;padding:8px 12px;background:var(--surface2);font-weight:600;color:var(--ink2);font-size:.75rem}
+.pol-table td{padding:8px 12px;border-top:1px solid var(--border);color:var(--ink2)}
+.pol-table tr:hover td{background:var(--surface2)}
+.g-t{color:var(--green);font-weight:600}.r-t{color:var(--red);font-weight:600}.o-t{color:var(--orange);font-weight:600}
+
+/* PRICE SUMMARY */
+.price-sum{background:#fff;border-radius:10px;padding:20px;box-shadow:var(--shadow);position:sticky;top:76px;height:fit-content}
+.price-sum h3{font-size:.92rem;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.pr-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:.83rem}
+.pr-row.tot{font-weight:700;font-size:.95rem;padding-top:10px;border-top:1.5px solid var(--border);color:var(--primary)}
+.ins-box{background:var(--green-light);border:1.5px solid #86efac;border-radius:8px;padding:12px;margin-top:12px}
+.ins-box h4{font-size:.8rem;font-weight:700;color:var(--green);margin-bottom:4px}
+.ins-box p{font-size:.72rem;color:#166534;line-height:1.5}
+.btn-proc{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:8px;
+  font-family:inherit;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:14px;transition:all .2s}
+.btn-proc:hover{background:#d97706;transform:translateY(-1px)}
+
+/* GODIGIT */
+.gd-card{background:linear-gradient(135deg,#065f46,#047857);border-radius:10px;padding:20px;color:#fff;box-shadow:var(--shadow-md)}
+.gd-card h3{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.gd-sub{font-size:.78rem;opacity:.8;margin-bottom:16px}
+.gd-feats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.gd-feat{background:#ffffff18;border-radius:6px;padding:10px;display:flex;align-items:center;gap:8px}
+.gd-feat p{font-size:.75rem;opacity:.9}
+.gd-plans{display:flex;gap:10px;margin-bottom:12px}
+.gd-plan{flex:1;background:#fff;border-radius:8px;padding:12px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.gd-plan.sel{border-color:var(--accent)}
+.gd-plan h4{font-size:.78rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.gd-plan .gp-pr{font-size:1rem;font-weight:800;color:var(--primary)}
+.gd-plan .gp-cv{font-size:.68rem;color:var(--ink3)}
+
+/* CUSTOMER FORM */
+.pax-card{background:#fff;border-radius:10px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.pax-card h3{font-size:.92rem;font-weight:700;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.f-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px}
+.gen-row{display:flex;gap:10px}
+.gen-opt{flex:1;padding:9px;border:1.5px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;font-size:.8rem;font-weight:500;transition:all .2s;color:var(--ink2)}
+.gen-opt.active{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+.divider{height:1px;background:var(--border);margin:14px 0}
+
+/* BOOKING REQUEST/RESPONSE */
+.bk-container{max-width:800px;margin:0 auto;padding:24px}
+.bk-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:20px}
+.bk-hdr{background:var(--primary);padding:16px 20px;color:#fff}
+.bk-hdr h3{font-size:.95rem;font-weight:700}.bk-hdr p{font-size:.75rem;opacity:.75;margin-top:2px}
+.bk-body{padding:16px 20px}
+.req-json{background:#1e293b;border-radius:6px;padding:14px;font-family:'JetBrains Mono',monospace;
+  font-size:.73rem;line-height:1.8;color:#e2e8f0;overflow-x:auto}
+.req-json .jk{color:#7dd3fc}.req-json .jv{color:#86efac}.req-json .jn{color:#fbbf24}.req-json .js{color:#f9a8d4}
+.stat-ban{border-radius:10px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:16px}
+.stat-ban.ok{background:var(--green-light);border:1.5px solid #86efac}
+.stat-ban.proc{background:var(--accent-light);border:1.5px solid #fcd34d}
+.stat-ban h3{font-size:1rem;font-weight:700}.stat-ban.ok h3{color:var(--green)}.stat-ban.proc h3{color:var(--orange)}
+.stat-ban p{font-size:.82rem;margin-top:3px}.stat-ban.ok p{color:#166534}.stat-ban.proc p{color:#92400e}
+.bk-det-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bd-item{background:var(--surface2);border-radius:6px;padding:10px 12px}
+.bd-item label{font-size:.68rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
+.bd-item p{font-size:.88rem;font-weight:600;color:var(--ink);margin-top:2px}
+.pnr-box{background:var(--primary);color:#fff;border-radius:8px;padding:14px 20px;text-align:center;margin-bottom:12px}
+.pnr-box label{font-size:.7rem;letter-spacing:2px;opacity:.7}
+.pnr-val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;letter-spacing:4px;margin-top:4px}
+
+/* CONFIRM PAGE */
+.confirm-wrap{max-width:680px;margin:0 auto;padding:40px 24px;text-align:center}
+.conf-icon{font-size:5rem;animation:confBounce .6s ease}
+@keyframes confBounce{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.conf-title{font-size:1.8rem;font-weight:800;color:var(--green);margin:16px 0 8px}
+.conf-sub{color:var(--ink2);font-size:.9rem;margin-bottom:32px}
+.conf-details{background:#fff;border-radius:12px;padding:20px;box-shadow:var(--shadow-md);text-align:left;margin-bottom:24px}
+.conf-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.conf-row:last-child{border-bottom:none}
+.conf-row label{color:var(--ink3)}
+.conf-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-outline{padding:10px 24px;border:1.5px solid var(--primary);color:var(--primary);
+  background:transparent;border-radius:8px;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-outline:hover{background:var(--primary-light)}
+
+/* HOTEL */
+.hotel-card{background:#fff;border-radius:10px;overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow);
+  cursor:pointer;transition:all .2s;border:2px solid transparent;display:flex}
+.hotel-card:hover{box-shadow:var(--shadow-md);border-color:var(--primary-light)}
+.hotel-img{width:160px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.hotel-info{padding:16px;flex:1}
+.hotel-name{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.hotel-loc{font-size:.75rem;color:var(--ink3);margin-bottom:6px}
+.hotel-stars{color:var(--accent);font-size:.85rem}
+.hotel-ams{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.hotel-am{font-size:.68rem;padding:2px 7px;background:var(--surface2);border-radius:4px;color:var(--ink2)}
+.hotel-price-col{padding:16px;text-align:right;display:flex;flex-direction:column;justify-content:space-between;min-width:130px}
+.hotel-pr{font-size:1.2rem;font-weight:800;color:var(--primary)}
+.hotel-pr-sub{font-size:.7rem;color:var(--ink3)}
+.rat-badge{display:inline-block;background:var(--green);color:#fff;border-radius:4px;padding:2px 7px;font-size:.78rem;font-weight:700;margin-bottom:4px}
+
+/* BUS/TRAIN */
+.tp-card{background:#fff;border-radius:10px;padding:16px;margin-bottom:10px;box-shadow:var(--shadow);
+  cursor:pointer;transition:all .2s;border:2px solid transparent}
+.tp-card:hover{box-shadow:var(--shadow-md);border-color:var(--primary-light)}
+.tc-row{display:flex;align-items:center;gap:12px}
+.tc-op{font-size:.82rem;font-weight:700;min-width:130px}
+.tc-op span{display:block;font-size:.7rem;color:var(--ink3);font-weight:400;margin-top:2px}
+.tc-ts{display:flex;align-items:center;gap:20px;flex:1}
+.tc-tb .t{font-size:1rem;font-weight:700}.tc-tb .s{font-size:.7rem;color:var(--ink3);margin-top:1px}
+.tc-dur{text-align:center;font-size:.75rem;color:var(--ink3)}
+.tc-pr{text-align:right}.tc-pr .p{font-size:1.1rem;font-weight:800;color:var(--primary)}
+.seat-badge{font-size:.7rem;padding:2px 8px;background:var(--green-light);color:var(--green);border-radius:4px;margin-top:4px;display:inline-block}
+
+/* SEAT MAP */
+.seat-map{background:var(--surface2);border-radius:8px;padding:16px;margin-bottom:12px}
+.seat-legend{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.sl-item{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--ink2)}
+.sl-dot{width:14px;height:14px;border-radius:3px}
+.sl-dot.av{background:#dbeafe;border:1.5px solid #93c5fd}
+.sl-dot.sl{background:var(--primary)}
+.sl-dot.bk{background:var(--border2)}
+.seat-row-wrap{display:flex;gap:4px;margin-bottom:4px;align-items:center}
+.sr-lbl{font-size:.68rem;color:var(--ink3);width:20px;text-align:center;font-family:'JetBrains Mono',monospace}
+.seat{width:28px;height:28px;border-radius:4px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:.65rem;font-weight:600;transition:all .15s;flex-shrink:0}
+.seat.av{background:#dbeafe;border:1.5px solid #93c5fd;color:var(--primary)}
+.seat.av:hover{background:var(--primary-light);border-color:var(--primary)}
+.seat.sl{background:var(--primary);color:#fff;border-color:var(--primary)}
+.seat.bk{background:var(--border2);color:#94a3b8;cursor:not-allowed}
+.seat-aisle{width:16px}
+
+/* ════ PNR RETRIEVAL ════ */
+.pnr-search-card{background:#fff;border-radius:14px;padding:28px;max-width:540px;margin:0 auto;box-shadow:var(--shadow-lg)}
+.pnr-search-card h3{font-size:1rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.pnr-tabs{display:flex;gap:0;margin-bottom:18px;border:1.5px solid var(--border);border-radius:8px;overflow:hidden}
+.pnr-tab{flex:1;padding:9px;background:transparent;border:none;cursor:pointer;font-family:inherit;font-size:.8rem;font-weight:600;color:var(--ink3);transition:all .2s}
+.pnr-tab.active{background:var(--primary);color:#fff}
+.demo-chips{margin-top:14px;text-align:center}
+.demo-chips p{font-size:.75rem;color:var(--ink3);margin-bottom:8px}
+.demo-chips-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.d-chip{padding:4px 12px;background:var(--primary-light);color:var(--primary);border-radius:20px;
+  font-size:.75rem;font-weight:600;cursor:pointer;font-family:'JetBrains Mono',monospace;
+  transition:all .2s;border:1px solid #bfdbfe}
+.d-chip:hover{background:var(--primary);color:#fff}
+.btn-retrieve{width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:8px;
+  font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;margin-top:16px;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-retrieve:hover{background:var(--primary-dark);transform:translateY(-1px)}
+
+/* PNR RESULT */
+.pnr-result-wrap{max-width:960px;margin:0 auto;padding:24px}
+.st-top{border-radius:12px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;box-shadow:var(--shadow)}
+.st-top.confirmed{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac}
+.st-top.cancelled{background:linear-gradient(135deg,#fff1f2,#fee2e2);border:1.5px solid #fca5a5}
+.st-top.pending{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fcd34d}
+.st-icon{font-size:2.8rem;flex-shrink:0}
+.st-info h2{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+.st-top.confirmed .st-info h2{color:var(--green)}
+.st-top.cancelled .st-info h2{color:var(--red)}
+.st-pnr-val{margin-left:auto;text-align:center;flex-shrink:0}
+.st-pnr-val label{font-size:.65rem;letter-spacing:2px;color:var(--ink3);text-transform:uppercase}
+.st-pnr-val .pv{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--primary);letter-spacing:3px;display:block;margin-top:2px}
+.pnr-grid{display:grid;grid-template-columns:1fr 300px;gap:20px}
+.rcard{background:var(--surface);border-radius:10px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.rcard h3{font-size:.88rem;font-weight:700;margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.rcard h3 span{font-size:.72rem;font-weight:500;color:var(--ink3)}
+.route-vis{display:flex;align-items:center;gap:0;padding:16px 0}
+.rv-pt{text-align:center;min-width:100px}
+.rv-pt .rv-t{font-size:1.5rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.rv-pt .rv-cy{font-size:.85rem;font-weight:600;margin-top:2px}
+.rv-pt .rv-ap{font-size:.72rem;color:var(--ink3)}
+.rv-pt .rv-dt{font-size:.72rem;color:var(--ink3);margin-top:2px}
+.rv-mid{flex:1;text-align:center;padding:0 12px}
+.rv-ln{height:2px;background:var(--border);position:relative;margin:0 8px 6px}
+.rv-ln::before,.rv-ln::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--primary);position:absolute;top:-3px}
+.rv-ln::before{left:0}.rv-ln::after{right:0}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.info-item{background:var(--surface2);border-radius:8px;padding:10px 12px}
+.info-item label{font-size:.65rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
+.info-item p{font-size:.86rem;font-weight:600;color:var(--ink)}
+.info-item p.hi{color:var(--primary)}.info-item p.gn{color:var(--green)}.info-item p.og{color:var(--orange)}
+.pax-table{width:100%;font-size:.83rem;border-collapse:collapse}
+.pax-table th{text-align:left;padding:8px 10px;background:var(--surface2);font-weight:600;color:var(--ink2);font-size:.72rem;letter-spacing:.3px}
+.pax-table td{padding:9px 10px;border-top:1px solid var(--border);color:var(--ink2)}
+.pax-table tr:hover td{background:var(--surface2)}
+.st-pill{padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:600}
+.st-pill.confirmed{background:var(--green-light);color:var(--green)}
+.st-pill.cancelled{background:var(--red-light);color:var(--red)}
+.fare-row{display:flex;justify-content:space-between;padding:7px 0;font-size:.83rem;border-bottom:1px solid var(--border)}
+.fare-row:last-child{border-bottom:none}
+.fare-row.tot{font-weight:700;font-size:.95rem;color:var(--primary);padding-top:10px;border-top:2px solid var(--border);margin-top:4px}
+.fare-row label{color:var(--ink2)}
+.api-block{background:#1e293b;border-radius:8px;padding:16px;font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;line-height:1.9;color:#e2e8f0;overflow-x:auto;max-height:300px;overflow-y:auto}
+.api-block .jk{color:#7dd3fc}.api-block .jv{color:#86efac}.api-block .jn{color:#fbbf24}.api-block .js{color:#f9a8d4}.api-block .jc{color:#8b949e;font-style:italic}
+.act-btns{display:flex;flex-direction:column;gap:10px}
+.act-btn{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;cursor:pointer;
+  font-family:inherit;font-size:.85rem;font-weight:600;transition:all .2s;border:1.5px solid var(--border);
+  background:var(--surface);color:var(--ink2);width:100%;text-align:left}
+.act-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.act-btn.danger{border-color:#fca5a5;color:var(--red)}.act-btn.danger:hover{background:var(--red-light)}
+.act-btn.success{border-color:#86efac;color:var(--green)}.act-btn.success:hover{background:var(--green-light)}
+.act-btn .ab-icon{font-size:1.1rem;flex-shrink:0}
+.act-btn .ab-tx{flex:1}
+.act-btn .ab-tx span{display:block;font-size:.72rem;color:var(--ink3);font-weight:400;margin-top:1px}
+.tl-item{display:flex;gap:14px;margin-bottom:16px}
+.tl-item:last-child{margin-bottom:0}
+.tl-lo{display:flex;flex-direction:column;align-items:center;width:28px;flex-shrink:0}
+.tl-dot-o{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.tl-dot-o.done{background:var(--green-light)}.tl-dot-o.active{background:var(--primary-light)}.tl-dot-o.up{background:var(--surface2)}
+.tl-conn{width:2px;flex:1;background:var(--border);margin-top:3px;min-height:20px}
+.tl-cont h4{font-size:.83rem;font-weight:600;margin-bottom:2px}.tl-cont p{font-size:.75rem;color:var(--ink3)}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:#00000060;z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-ov.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:28px;max-width:460px;width:100%;box-shadow:var(--shadow-lg);animation:mIn .2s ease}
+@keyframes mIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h3{font-size:1rem;font-weight:700;margin-bottom:6px}
+.modal p{font-size:.85rem;color:var(--ink2);line-height:1.7;margin-bottom:16px}
+.modal-acts{display:flex;gap:10px;justify-content:flex-end}
+.btn-sm{padding:9px 20px;border-radius:6px;font-family:inherit;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-sm.primary{background:var(--primary);color:#fff;border:none}.btn-sm.primary:hover{background:var(--primary-dark)}
+.btn-sm.danger{background:var(--red);color:#fff;border:none}.btn-sm.danger:hover{background:#b91c1c}
+.btn-sm.outline{background:transparent;border:1.5px solid var(--border);color:var(--ink2)}.btn-sm.outline:hover{border-color:var(--ink);color:var(--ink)}
+.modal-warn{background:var(--red-light);border-left:3px solid var(--red);border-radius:6px;padding:10px 14px;font-size:.8rem;color:var(--red);margin-bottom:14px}
+.rsch-form{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.rsch-form label{font-size:.75rem;font-weight:600;color:var(--ink2)}
+.rsch-form input,.rsch-form select{padding:9px 12px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.85rem;outline:none}
+.rsch-form input:focus,.rsch-form select:focus{border-color:var(--primary)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;
+  color:#fff;padding:12px 24px;border-radius:8px;font-size:.85rem;font-weight:500;z-index:600;
+  transition:transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* LOADING DOTS */
+.ldots{display:inline-flex;gap:4px}
+.ldots span{width:6px;height:6px;border-radius:50%;background:var(--primary);animation:ldot 1.2s infinite}
+.ldots span:nth-child(2){animation-delay:.2s}.ldots span:nth-child(3){animation-delay:.4s}
+@keyframes ldot{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+
+@media(max-width:768px){
+  .list-layout{grid-template-columns:1fr}.filter-box{display:none}
+  .det-layout{grid-template-columns:1fr}.pnr-grid{grid-template-columns:1fr}
+  .hotel-card{flex-direction:column}.hotel-img{width:100%;height:120px}
+  .home-cards{grid-template-columns:repeat(2,1fr)}.gd-plans{flex-direction:column}
+  .route-vis{flex-wrap:wrap}.bk-det-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div class="page active" id="pgLogin">
+  <div class="topbar"><div class="logo"><div class="logo-icon">✈</div> SmartBuy</div></div>
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo"><h1>✈ SmartBuy</h1><p>Corporate Travel Management Platform</p></div>
+      <div class="form-group"><label class="form-label">EMPLOYEE EMAIL</label>
+        <input class="form-input" type="text" id="loginEmail" value="john.doe@techcorp.com"/></div>
+      <div class="form-group"><label class="form-label">PASSWORD</label>
+        <input class="form-input" type="password" value="password123"/></div>
+      <div class="form-group"><label class="form-label">COMPANY CODE</label>
+        <input class="form-input" type="text" value="TECHCORP"/></div>
+      <button class="btn-primary" onclick="doLogin()">Sign In to SmartBuy</button>
+      <p class="login-hint">Demo: Click Sign In with any credentials above.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOME ══ -->
+<div class="page" id="pgHome">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="userGreet">Welcome, John</span>
+      <button class="nav-btn" onclick="goPage('pgPNRSearch')">📋 Manage Booking</button>
+      <button class="nav-btn" onclick="goPage('pgLogin')">Logout</button>
+    </div>
+  </div>
+  <div class="home-hero">
+    <h2>Where would you like to go? 🌏</h2>
+    <p>Book flights, hotels, buses & trains — all within your company travel policy</p>
+  </div>
+  <div class="home-cards">
+    <div class="travel-card" onclick="goPage('pgFlightSearch')"><div class="tc-icon">✈️</div><h3>Flights</h3><p>Domestic & International</p></div>
+    <div class="travel-card" onclick="goPage('pgHotelSearch')"><div class="tc-icon">🏨</div><h3>Hotels</h3><p>3★ to 5★ Properties</p></div>
+    <div class="travel-card" onclick="goPage('pgBusSearch')"><div class="tc-icon">🚌</div><h3>Bus</h3><p>Intercity Buses</p></div>
+    <div class="travel-card" onclick="goPage('pgTrainSearch')"><div class="tc-icon">🚂</div><h3>Trains</h3><p>IRCTC Integrated</p></div>
+    <div class="travel-card" onclick="goPage('pgPNRSearch')" style="border-color:var(--accent-light)">
+      <div class="tc-icon">📋</div><h3>Manage Booking</h3><p>PNR Retrieval</p>
+    </div>
+  </div>
+  <div style="max-width:1000px;margin:24px auto;padding:0 24px">
+    <div class="policy-banner">
+      <div style="font-size:1.5rem">📋</div>
+      <div><h4 style="font-size:.88rem;font-weight:700;color:var(--primary)">Travel Policy Active: TECHCORP Standard</h4>
+        <p style="font-size:.78rem;color:var(--ink3)">Economy for flights &lt;4hrs • Hotels max ₹5,000/night • Manager approval for bookings &gt;₹15,000</p></div>
+    </div>
+  </div>
+  <div class="recent-bk">
+    <div class="sec-ttl">Recent Bookings</div>
+    <div class="bk-row" onclick="quickPNR('ABCDEF')"><div class="bk-icon fl">✈️</div><div class="bk-info"><div class="bk-title">BLR → DEL — IndiGo 6E-201</div><div class="bk-sub">15 Jan 2025 • PNR: ABCDEF</div></div><span class="bk-st ok">Confirmed</span></div>
+    <div class="bk-row" onclick="quickPNR('XY7890')"><div class="bk-icon ht">🏨</div><div class="bk-info"><div class="bk-title">BLR → DEL — Air India AI-502</div><div class="bk-sub">20 Feb 2025 • PNR: XY7890</div></div><span class="bk-st ok">Confirmed</span></div>
+    <div class="bk-row" onclick="quickPNR('CANCEL')"><div class="bk-icon bs">🚌</div><div class="bk-info"><div class="bk-title">BLR → DEL — SpiceJet SG-112</div><div class="bk-sub">10 Jan 2025 • PNR: CANCEL</div></div><span class="bk-st pnd" style="background:var(--red-light);color:var(--red)">Cancelled</span></div>
+  </div>
+</div>
+
+<!-- ══ FLIGHT SEARCH ══ -->
+<div class="page" id="pgFlightSearch">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right">
+      <button class="nav-btn" onclick="goPage('pgPNRSearch')">📋 Manage Booking</button>
+      <button class="back-btn" onclick="goPage('pgHome')">← Home</button>
+    </div>
+  </div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › Flight Search</div>
+  <div class="search-container">
+    <div class="search-card">
+      <h3>✈️ Search Flights</h3>
+      <div class="trip-row">
+        <button class="trip-btn active" onclick="setTrip(this,'one')">One Way</button>
+        <button class="trip-btn" onclick="setTrip(this,'round')">Round Trip</button>
+        <button class="trip-btn" onclick="setTrip(this,'multi')">Multi City</button>
+      </div>
+      <div class="s-row">
+        <div class="s-field"><label>FROM</label><input type="text" value="Bangalore (BLR)" id="flFrom"/></div>
+        <button class="swap-btn" onclick="swapCities()">⇄</button>
+        <div class="s-field"><label>TO</label><input type="text" value="Delhi (DEL)" id="flTo"/></div>
+        <div class="s-field"><label>DEPARTURE</label><input type="date" value="2025-02-15"/></div>
+        <div class="s-field" id="retF" style="display:none"><label>RETURN</label><input type="date" value="2025-02-20"/></div>
+      </div>
+      <div class="s-row">
+        <div class="s-field"><label>TRAVELLERS</label><select><option>1 Adult</option><option>2 Adults</option><option>3 Adults</option></select></div>
+        <div class="s-field"><label>CLASS</label><select><option>Economy</option><option>Business</option><option>First Class</option></select></div>
+        <div class="s-field"><label>AIRLINE</label><select><option>Any Airline</option><option>IndiGo</option><option>Air India</option><option>SpiceJet</option><option>Vistara</option></select></div>
+        <div class="s-field" style="justify-content:flex-end"><label>&nbsp;</label><button class="btn-search" onclick="goPage('pgFlightList')">🔍 Search Flights</button></div>
+      </div>
+      <div class="info-alert">📋 Policy: Economy class mandatory for flights under 4 hours.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FLIGHT LIST ══ -->
+<div class="page" id="pgFlightList">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right">
+      <button class="nav-btn" onclick="goPage('pgPNRSearch')">📋 Manage Booking</button>
+      <button class="back-btn" onclick="goPage('pgFlightSearch')">← Modify Search</button>
+    </div>
+  </div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › <span class="bc" onclick="goPage('pgFlightSearch')">Flight Search</span> › Results</div>
+  <div class="list-layout">
+    <div class="filter-box">
+      <div class="filter-title">🎚 Filters</div>
+      <div class="filter-sec"><h4>Stops</h4>
+        <label class="f-check"><input type="checkbox" checked/><label>Non-stop</label></label>
+        <label class="f-check"><input type="checkbox" checked/><label>1 Stop</label></label></div>
+      <div class="filter-sec"><h4>Airlines</h4>
+        <label class="f-check"><input type="checkbox" checked/><label>IndiGo</label></label>
+        <label class="f-check"><input type="checkbox" checked/><label>Air India</label></label>
+        <label class="f-check"><input type="checkbox" checked/><label>SpiceJet</label></label>
+        <label class="f-check"><input type="checkbox" checked/><label>Vistara</label></label></div>
+      <div class="filter-sec"><h4>Departure Time</h4>
+        <label class="f-check"><input type="checkbox" checked/><label>Morning (6–12)</label></label>
+        <label class="f-check"><input type="checkbox" checked/><label>Afternoon (12–18)</label></label>
+        <label class="f-check"><input type="checkbox"/><label>Night (18–24)</label></label></div>
+    </div>
+    <div>
+      <div class="res-hdr">
+        <div><div style="font-weight:700;font-size:.95rem">BLR → DEL · 15 Feb 2025</div>
+          <div class="res-cnt">Showing 6 flights</div></div>
+        <select class="sort-sel"><option>Sort: Cheapest</option><option>Sort: Fastest</option><option>Sort: Departure</option></select>
+      </div>
+      <div id="flightCards"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FLIGHT DETAIL ══ -->
+<div class="page" id="pgFlightDetail">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right">
+      <button class="nav-btn" onclick="goPage('pgPNRSearch')">📋 Manage Booking</button>
+      <button class="back-btn" onclick="goPage('pgFlightList')">← Back to Results</button>
+    </div>
+  </div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › <span class="bc" onclick="goPage('pgFlightSearch')">Search</span> › <span class="bc" onclick="goPage('pgFlightList')">Results</span> › Flight Info</div>
+  <div class="det-layout">
+    <div>
+      <div class="det-card">
+        <h3>✈️ Flight Information</h3>
+        <div class="fc-row" style="margin-bottom:16px">
+          <div class="air-logo" style="width:44px;height:44px;font-size:1.3rem" id="dlLogo"></div>
+          <div><div style="font-weight:700;font-size:.95rem" id="dlName"></div><div style="font-size:.75rem;color:var(--ink3)" id="dlNum"></div></div>
+          <div style="margin-left:auto;text-align:right"><div style="font-size:.75rem;color:var(--ink3)">Aircraft</div><div style="font-weight:600;font-size:.85rem">Airbus A320neo</div></div>
+        </div>
+        <div>
+          <div class="tl-row"><div><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div class="tl-info" style="padding-bottom:16px">
+              <h4 id="dlDep" style="font-size:1.1rem"></h4><p id="dlDepAp"></p><p style="font-size:.75rem;color:var(--ink3)">Terminal 1 · 15 Feb 2025</p></div></div>
+          <div class="tl-row" style="margin-top:4px"><div><div class="tl-dot" style="background:var(--green)"></div></div>
+            <div class="tl-info">
+              <h4 id="dlArr" style="font-size:1.1rem"></h4><p id="dlArrAp"></p><p style="font-size:.75rem;color:var(--ink3)">Terminal 3 · 15 Feb 2025</p></div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:20px;font-size:.82rem">
+          <div><span style="color:var(--ink3)">Duration: </span><strong id="dlDur"></strong></div>
+          <div><span style="color:var(--ink3)">Stops: </span><strong class="g-t">Non-stop</strong></div>
+          <div><span style="color:var(--ink3)">Class: </span><strong>Economy</strong></div>
+        </div>
+      </div>
+      <div class="det-card">
+        <h3>🛎️ In-flight Amenities</h3>
+        <div class="am-grid">
+          <div class="am-item">🍽️ Paid Meals</div><div class="am-item">💺 Reclining Seats</div>
+          <div class="am-item">📱 USB Charging</div><div class="am-item">🎧 Entertainment</div>
+          <div class="am-item">🧳 15kg Check-in</div><div class="am-item">💼 7kg Hand Bag</div>
+        </div>
+      </div>
+      <div class="det-card">
+        <h3>🧳 Baggage Policy</h3>
+        <table class="pol-table" width="100%">
+          <thead><tr><th>Type</th><th>Allowance</th><th>Extra Charge</th></tr></thead>
+          <tbody>
+            <tr><td>Cabin Baggage</td><td>1 × 7 kg</td><td class="g-t">Included</td></tr>
+            <tr><td>Check-in Baggage</td><td>1 × 15 kg</td><td class="g-t">Included</td></tr>
+            <tr><td>Extra (per kg)</td><td>As needed</td><td class="r-t">₹450/kg</td></tr>
+            <tr><td>Sports Equipment</td><td>20 kg max</td><td class="o-t">₹1,200</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="det-card">
+        <h3>❌ Cancellation Policy</h3>
+        <table class="pol-table" width="100%">
+          <thead><tr><th>Time Before Departure</th><th>Fee</th><th>Refund</th></tr></thead>
+          <tbody>
+            <tr><td>&gt; 7 days</td><td class="g-t">₹1,500</td><td class="g-t">Full refund minus fee</td></tr>
+            <tr><td>3–7 days</td><td class="o-t">₹2,500</td><td class="o-t">Partial refund</td></tr>
+            <tr><td>24–72 hours</td><td class="r-t">₹3,500</td><td class="r-t">Partial refund</td></tr>
+            <tr><td>&lt; 24 hours</td><td class="r-t">No Refund</td><td class="r-t">Non-refundable</td></tr>
+          </tbody>
+        </table>
+        <div class="info-alert" style="margin-top:12px">Date change fee: ₹2,000 + fare difference. Allowed up to 4 hours before departure.</div>
+      </div>
+      <div class="gd-card">
+        <h3>🛡️ GoDigit Travel Insurance</h3>
+        <p class="gd-sub">Protect your journey with comprehensive coverage</p>
+        <div class="gd-feats">
+          <div class="gd-feat"><span>✈️</span><p>Flight cancellation up to ₹50,000</p></div>
+          <div class="gd-feat"><span>🏥</span><p>Medical emergency ₹5,00,000</p></div>
+          <div class="gd-feat"><span>🧳</span><p>Baggage loss up to ₹25,000</p></div>
+          <div class="gd-feat"><span>⏰</span><p>Flight delay coverage ₹5,000</p></div>
+        </div>
+        <div class="gd-plans">
+          <div class="gd-plan sel" onclick="selPlan(this)"><h4>Basic</h4><div class="gp-pr">₹199</div><div class="gp-cv">Cover: ₹1L</div></div>
+          <div class="gd-plan" onclick="selPlan(this)"><h4>Standard</h4><div class="gp-pr">₹349</div><div class="gp-cv">Cover: ₹3L</div></div>
+          <div class="gd-plan" onclick="selPlan(this)"><h4>Premium</h4><div class="gp-pr">₹599</div><div class="gp-cv">Cover: ₹5L</div></div>
+        </div>
+        <div style="font-size:.75rem;opacity:.7">* Insurance provided by GoDigit General Insurance.</div>
+      </div>
+    </div>
+    <div>
+      <div class="price-sum">
+        <h3>💰 Price Summary</h3>
+        <div class="pr-row"><span>Base Fare (1 Adult)</span><span id="ps-base"></span></div>
+        <div class="pr-row"><span>Taxes & Fees</span><span id="ps-tax"></span></div>
+        <div class="pr-row"><span>Convenience Fee</span><span>₹149</span></div>
+        <div class="pr-row"><span>GoDigit Insurance</span><span>₹199</span></div>
+        <div class="pr-row tot"><span>Total Amount</span><span id="ps-total"></span></div>
+        <div class="ins-box"><h4>✅ Policy Compliant</h4><p>This booking is within your company travel policy. No approval required.</p></div>
+        <button class="btn-proc" onclick="goPage('pgCustomer')">Continue to Passenger Details →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CUSTOMER DETAILS ══ -->
+<div class="page" id="pgCustomer">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgFlightDetail')">← Flight Details</button></div>
+  </div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › <span class="bc" onclick="goPage('pgFlightSearch')">Search</span> › <span class="bc" onclick="goPage('pgFlightList')">Results</span> › <span class="bc" onclick="goPage('pgFlightDetail')">Flight Info</span> › Passenger Details</div>
+  <div class="det-layout">
+    <div>
+      <div class="pax-card">
+        <h3>👤 Passenger 1 — Adult</h3>
+        <div class="form-group"><label class="form-label">TITLE</label>
+          <div class="gen-row">
+            <div class="gen-opt active" onclick="selTitle(this)">Mr</div>
+            <div class="gen-opt" onclick="selTitle(this)">Ms</div>
+            <div class="gen-opt" onclick="selTitle(this)">Mrs</div>
+            <div class="gen-opt" onclick="selTitle(this)">Dr</div>
+          </div>
+        </div>
+        <div class="f-grid">
+          <div class="s-field"><label>FIRST NAME</label><input type="text" value="John"/></div>
+          <div class="s-field"><label>LAST NAME</label><input type="text" value="Doe"/></div>
+          <div class="s-field"><label>DATE OF BIRTH</label><input type="date" value="1990-05-15"/></div>
+          <div class="s-field"><label>NATIONALITY</label><select><option>Indian</option><option>Other</option></select></div>
+          <div class="s-field"><label>PAN NUMBER</label><input type="text" value="ABCDE1234F"/></div>
+          <div class="s-field"><label>MOBILE</label><input type="tel" value="+91 98765 43210"/></div>
+        </div>
+      </div>
+      <div class="pax-card">
+        <h3>📧 Contact Details</h3>
+        <div class="f-grid">
+          <div class="s-field"><label>EMAIL</label><input type="email" value="john.doe@techcorp.com"/></div>
+          <div class="s-field"><label>ALTERNATE PHONE</label><input type="tel" placeholder="+91 XXXXXXXXXX"/></div>
+        </div>
+      </div>
+      <div class="pax-card">
+        <h3>🧾 GST Details <span style="font-size:.75rem;color:var(--ink3);font-weight:400">(Optional)</span></h3>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.82rem;color:var(--ink2)">
+          <input type="checkbox" id="gstTgl" onchange="toggleGST()" style="accent-color:var(--primary)"/> Use GST for this booking
+        </label>
+        <div id="gstFlds" style="display:none;margin-top:14px">
+          <div class="f-grid">
+            <div class="s-field"><label>GST NUMBER</label><input type="text" value="29ABCDE1234F1Z5"/></div>
+            <div class="s-field"><label>COMPANY NAME</label><input type="text" value="TechCorp India Pvt Ltd"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="pax-card">
+        <h3>🍽️ Meal & Seat Preference</h3>
+        <div class="f-grid">
+          <div class="s-field"><label>MEAL</label><select><option>No Preference</option><option>Vegetarian</option><option>Non-Vegetarian</option><option>Vegan</option><option>Jain</option></select></div>
+          <div class="s-field"><label>SEAT</label><select><option>No Preference</option><option>Window</option><option>Aisle</option><option>Middle</option></select></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="price-sum">
+        <h3>💰 Price Summary</h3>
+        <div class="pr-row"><span>Base Fare</span><span id="cps-base"></span></div>
+        <div class="pr-row"><span>Taxes & Fees</span><span id="cps-tax"></span></div>
+        <div class="pr-row"><span>Convenience Fee</span><span>₹149</span></div>
+        <div class="pr-row"><span>GoDigit Insurance</span><span>₹199</span></div>
+        <div class="pr-row tot"><span>Total Amount</span><span id="cps-total"></span></div>
+        <div style="background:var(--accent-light);border-radius:8px;padding:12px;margin-top:12px;font-size:.78rem;color:#92400e">
+          <strong>⏱️ Price Lock:</strong> Fare locked for 12 minutes.
+        </div>
+        <button class="btn-proc" onclick="goBookingRequest()">Review & Confirm Booking →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING PAGE ══ -->
+<div class="page" id="pgBooking">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgCustomer')">← Passenger Details</button></div>
+  </div>
+  <div class="breadcrumb">Home › Search › Results › Flight Info › Passenger Details › <span style="color:var(--ink)">Confirm</span></div>
+  <div class="bk-container">
+    <div class="bk-card">
+      <div class="bk-hdr"><h3>📤 Booking Request Payload</h3><p>Sending to airline booking system</p></div>
+      <div class="bk-body"><div class="req-json" id="reqJson"></div></div>
+    </div>
+    <div id="procBanner" class="stat-ban proc">
+      <div style="font-size:2rem">⏳</div>
+      <div><h3>Processing Your Booking</h3>
+        <p>Communicating with airline system… <span class="ldots"><span></span><span></span><span></span></span></p></div>
+    </div>
+    <div id="resSection" style="display:none">
+      <div class="stat-ban ok"><div style="font-size:2rem">✅</div>
+        <div><h3>Booking Confirmed!</h3><p>Your ticket has been issued. E-ticket sent to john.doe@techcorp.com</p></div></div>
+      <div class="pnr-box"><label>PNR NUMBER</label><div class="pnr-val" id="pnrDisplay"></div></div>
+      <div class="bk-card">
+        <div class="bk-hdr" style="background:var(--green)"><h3>📥 Booking Response Payload</h3><p>Response from airline system</p></div>
+        <div class="bk-body"><div class="req-json" id="resJson"></div></div>
+      </div>
+      <div class="det-card">
+        <h3>📋 Booking Summary</h3>
+        <div class="bk-det-grid" id="bkSummary"></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap">
+        <button class="btn-primary" style="max-width:220px" onclick="goPage('pgConfirm')">🎉 View Ticket</button>
+        <button class="btn-outline" onclick="goPage('pgHome')">← Back to Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TICKET CONFIRMED ══ -->
+<div class="page" id="pgConfirm">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div></div>
+  <div class="confirm-wrap">
+    <div class="conf-icon">🎉</div>
+    <div class="conf-title">Booking Confirmed!</div>
+    <div class="conf-sub">Your e-ticket has been sent to john.doe@techcorp.com</div>
+    <div class="conf-details">
+      <div class="conf-row"><label>PNR Number</label><strong id="cfPnr" style="font-family:'JetBrains Mono',monospace;color:var(--primary);font-size:1rem;letter-spacing:2px"></strong></div>
+      <div class="conf-row"><label>Flight</label><strong id="cfFlight"></strong></div>
+      <div class="conf-row"><label>Route</label><strong>BLR → DEL</strong></div>
+      <div class="conf-row"><label>Date & Time</label><strong id="cfDate"></strong></div>
+      <div class="conf-row"><label>Passenger</label><strong>John Doe (Adult)</strong></div>
+      <div class="conf-row"><label>Seat</label><strong>23A (Window)</strong></div>
+      <div class="conf-row"><label>Total Paid</label><strong id="cfTotal" style="color:var(--green)"></strong></div>
+      <div class="conf-row"><label>Insurance</label><strong>GoDigit Basic — ₹199 ✅</strong></div>
+    </div>
+    <div class="conf-actions">
+      <button class="btn-primary" style="width:auto;padding:10px 24px" onclick="showToast('⬇️ E-ticket downloaded!')">⬇️ Download E-Ticket</button>
+      <button class="btn-outline" onclick="goPage('pgPNRSearch')">📋 Manage This Booking</button>
+      <button class="btn-outline" onclick="goPage('pgHome')">← Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOTEL SEARCH ══ -->
+<div class="page" id="pgHotelSearch">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="nav-btn" onclick="goPage('pgPNRSearch')">📋 Manage Booking</button><button class="back-btn" onclick="goPage('pgHome')">← Home</button></div></div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › Hotel Search</div>
+  <div class="search-container">
+    <div class="search-card">
+      <h3>🏨 Search Hotels</h3>
+      <div class="s-row">
+        <div class="s-field" style="flex:2"><label>CITY / HOTEL</label><input type="text" value="Delhi"/></div>
+        <div class="s-field"><label>CHECK-IN</label><input type="date" value="2025-02-15"/></div>
+        <div class="s-field"><label>CHECK-OUT</label><input type="date" value="2025-02-17"/></div>
+        <div class="s-field"><label>ROOMS</label><select><option>1 Room</option><option>2 Rooms</option></select></div>
+        <div style="display:flex;align-items:flex-end"><button class="btn-search" onclick="searchHotels()">🔍 Search</button></div>
+      </div>
+      <div class="info-alert">📋 Policy: Maximum hotel budget ₹5,000/night.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOTEL LIST ══ -->
+<div class="page" id="pgHotelList">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="nav-btn" onclick="goPage('pgPNRSearch')">📋 Manage Booking</button><button class="back-btn" onclick="goPage('pgHotelSearch')">← Modify</button></div></div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › <span class="bc" onclick="goPage('pgHotelSearch')">Hotel Search</span> › Results</div>
+  <div class="search-container">
+    <div class="res-hdr"><div style="font-weight:700;font-size:.95rem">Hotels in Delhi — 15–17 Feb</div><select class="sort-sel"><option>Recommended</option><option>Price: Low</option><option>Rating: High</option></select></div>
+    <div id="hotelCards"></div>
+  </div>
+</div>
+
+<!-- ══ HOTEL CONFIRM ══ -->
+<div class="page" id="pgHotelConfirm">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div></div>
+  <div class="confirm-wrap">
+    <div class="conf-icon">🏨</div>
+    <div class="conf-title" style="color:var(--primary)">Hotel Booked!</div>
+    <div class="conf-sub">Voucher sent to john.doe@techcorp.com</div>
+    <div class="conf-details">
+      <div class="conf-row"><label>Booking ID</label><strong style="font-family:'JetBrains Mono',monospace;color:var(--primary)">HTL-2025-78901</strong></div>
+      <div class="conf-row"><label>Hotel</label><strong id="hotelName">Radisson Blu, Dwarka</strong></div>
+      <div class="conf-row"><label>Check-in</label><strong>15 Feb 2025</strong></div>
+      <div class="conf-row"><label>Check-out</label><strong>17 Feb 2025 (2 nights)</strong></div>
+      <div class="conf-row"><label>Total Paid</label><strong style="color:var(--green)" id="hotelTotal">₹7,998</strong></div>
+    </div>
+    <div class="conf-actions">
+      <button class="btn-primary" style="width:auto;padding:10px 24px" onclick="showToast('⬇️ Hotel voucher downloaded!')">⬇️ Download Voucher</button>
+      <button class="btn-outline" onclick="goPage('pgHome')">← Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BUS SEARCH ══ -->
+<div class="page" id="pgBusSearch">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgHome')">← Home</button></div></div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › Bus Search</div>
+  <div class="search-container">
+    <div class="search-card">
+      <h3>🚌 Search Buses</h3>
+      <div class="s-row">
+        <div class="s-field"><label>FROM</label><input type="text" value="Bangalore"/></div>
+        <button class="swap-btn">⇄</button>
+        <div class="s-field"><label>TO</label><input type="text" value="Mysore"/></div>
+        <div class="s-field"><label>DATE</label><input type="date" value="2025-02-15"/></div>
+        <div style="display:flex;align-items:flex-end"><button class="btn-search" onclick="searchBus()">🔍 Search</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BUS LIST ══ -->
+<div class="page" id="pgBusList">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgBusSearch')">← Modify</button></div></div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › Bus › Results</div>
+  <div class="search-container">
+    <div class="res-hdr"><div style="font-weight:700">BLR → MYS · 15 Feb 2025</div></div>
+    <div id="busCards"></div>
+  </div>
+</div>
+
+<!-- ══ BUS SEAT ══ -->
+<div class="page" id="pgBusSeat">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgBusList')">← Bus List</button></div></div>
+  <div class="det-layout">
+    <div>
+      <div class="det-card">
+        <h3>💺 Select Your Seat</h3>
+        <div id="busSeatOp" style="font-size:.85rem;color:var(--ink2);margin-bottom:12px"></div>
+        <div class="seat-map">
+          <div class="seat-legend">
+            <div class="sl-item"><div class="sl-dot av"></div>Available</div>
+            <div class="sl-item"><div class="sl-dot sl"></div>Selected</div>
+            <div class="sl-item"><div class="sl-dot bk"></div>Booked</div>
+          </div>
+          <div style="text-align:center;font-size:.75rem;color:var(--ink3);margin-bottom:8px">🚌 FRONT</div>
+          <div id="busSeatMap"></div>
+        </div>
+        <div id="selSeatInfo" style="display:none;background:var(--primary-light);border-radius:8px;padding:12px;font-size:.82rem;color:var(--primary)">
+          ✅ Selected: <strong id="selSeatLbl"></strong>
+        </div>
+      </div>
+      <div class="det-card">
+        <h3>❌ Bus Cancellation Policy</h3>
+        <table class="pol-table" width="100%">
+          <thead><tr><th>Time Before Departure</th><th>Fee</th><th>Refund</th></tr></thead>
+          <tbody>
+            <tr><td>&gt; 24 hours</td><td class="g-t">₹100</td><td class="g-t">Full refund minus fee</td></tr>
+            <tr><td>12–24 hours</td><td class="o-t">25% of fare</td><td class="o-t">75% refund</td></tr>
+            <tr><td>&lt; 12 hours</td><td class="r-t">No Refund</td><td class="r-t">Non-refundable</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="price-sum">
+        <h3>💰 Bus Fare</h3>
+        <div class="pr-row"><span>Base Fare</span><span id="busBase"></span></div>
+        <div class="pr-row"><span>Taxes</span><span>₹45</span></div>
+        <div class="pr-row tot"><span>Total</span><span id="busTot"></span></div>
+        <button class="btn-proc" onclick="confirmBusBook()">Confirm Booking →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TRAIN SEARCH ══ -->
+<div class="page" id="pgTrainSearch">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgHome')">← Home</button></div></div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › Train Search</div>
+  <div class="search-container">
+    <div class="search-card">
+      <h3>🚂 Search Trains</h3>
+      <div class="s-row">
+        <div class="s-field"><label>FROM STATION</label><input type="text" value="Bangalore City (SBC)"/></div>
+        <button class="swap-btn">⇄</button>
+        <div class="s-field"><label>TO STATION</label><input type="text" value="Delhi (NDLS)"/></div>
+        <div class="s-field"><label>DATE</label><input type="date" value="2025-02-15"/></div>
+        <div class="s-field"><label>CLASS</label><select><option>All Classes</option><option>Sleeper (SL)</option><option>3 Tier AC (3A)</option><option>2 Tier AC (2A)</option></select></div>
+        <div style="display:flex;align-items:flex-end"><button class="btn-search" onclick="searchTrain()">🔍 Search</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TRAIN LIST ══ -->
+<div class="page" id="pgTrainList">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right"><button class="back-btn" onclick="goPage('pgTrainSearch')">← Modify</button></div></div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › Train › Results</div>
+  <div class="search-container">
+    <div class="res-hdr"><div style="font-weight:700">SBC → NDLS · 15 Feb 2025</div></div>
+    <div id="trainCards"></div>
+  </div>
+</div>
+
+<!-- ══ TRAIN CONFIRM ══ -->
+<div class="page" id="pgTrainConfirm">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div></div>
+  <div class="confirm-wrap">
+    <div class="conf-icon">🚂</div>
+    <div class="conf-title" style="color:var(--purple)">Train Booked!</div>
+    <div class="conf-sub">Ticket sent to john.doe@techcorp.com</div>
+    <div class="conf-details">
+      <div class="conf-row"><label>PNR</label><strong style="font-family:'JetBrains Mono',monospace;color:var(--purple)" id="trainPnr"></strong></div>
+      <div class="conf-row"><label>Train</label><strong id="trainName"></strong></div>
+      <div class="conf-row"><label>Route</label><strong>SBC → NDLS</strong></div>
+      <div class="conf-row"><label>Date</label><strong>15 Feb 2025</strong></div>
+      <div class="conf-row"><label>Coach/Seat</label><strong>B2 / 34 (Middle Berth)</strong></div>
+      <div class="conf-row"><label>Total Paid</label><strong style="color:var(--green)" id="trainTot"></strong></div>
+    </div>
+    <div class="conf-actions">
+      <button class="btn-primary" style="width:auto;padding:10px 24px" onclick="showToast('⬇️ Train ticket downloaded!')">⬇️ Download Ticket</button>
+      <button class="btn-outline" onclick="goPage('pgHome')">← Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PNR RETRIEVAL (MANAGE BOOKING)
+══════════════════════════════════ -->
+<div class="page" id="pgPNRSearch">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right">
+      <button class="nav-btn active-nav">📋 Manage Booking</button>
+      <button class="back-btn" onclick="goPage('pgHome')">← Home</button>
+    </div>
+  </div>
+  <div style="background:linear-gradient(135deg,#1e3a8a,#1e40af,#2563eb);padding:48px 24px;text-align:center">
+    <h1 style="font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-1px">📋 Manage Your Booking</h1>
+    <p style="color:#bfdbfe;font-size:.9rem;margin-bottom:32px">Retrieve booking details, download ticket, cancel or reschedule</p>
+    <div class="pnr-search-card">
+      <h3>🔍 Retrieve Booking</h3>
+      <div class="pnr-tabs">
+        <button class="pnr-tab active" onclick="switchPNRTab(this,'byPnr')">By PNR</button>
+        <button class="pnr-tab" onclick="switchPNRTab(this,'byEmail')">By Email</button>
+      </div>
+      <div id="byPnr">
+        <div class="form-group"><label class="form-label">PNR NUMBER</label>
+          <input class="form-input" type="text" id="pnrInput" placeholder="e.g. ABCDEF" maxlength="8" style="text-transform:uppercase;letter-spacing:3px"/></div>
+        <div class="form-group"><label class="form-label">LAST NAME</label>
+          <input class="form-input" id="lnInput" type="text" placeholder="Passenger last name"/></div>
+      </div>
+      <div id="byEmail" style="display:none">
+        <div class="form-group"><label class="form-label">EMAIL ADDRESS</label>
+          <input class="form-input" type="email" placeholder="john.doe@company.com" style="text-transform:none;letter-spacing:0"/></div>
+        <div class="form-group"><label class="form-label">MOBILE NUMBER</label>
+          <input class="form-input" type="tel" placeholder="+91 XXXXXXXXXX" style="letter-spacing:0"/></div>
+      </div>
+      <button class="btn-retrieve" onclick="retrieveBooking()">🔍 Retrieve Booking</button>
+      <div class="demo-chips">
+        <p>Try demo PNR numbers:</p>
+        <div class="demo-chips-row">
+          <span class="d-chip" onclick="fillPNR('ABCDEF')">ABCDEF</span>
+          <span class="d-chip" onclick="fillPNR('XY7890')">XY7890</span>
+          <span class="d-chip" onclick="fillPNR('PQ1234')">PQ1234</span>
+          <span class="d-chip" onclick="fillPNR('CANCEL')">CANCEL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:900px;margin:32px auto;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px">
+    <div style="background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:1.8rem;margin-bottom:8px">📋</div><div style="font-size:.85rem;font-weight:600">View Details</div><div style="font-size:.75rem;color:var(--ink3);margin-top:4px">Full booking info</div></div>
+    <div style="background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:1.8rem;margin-bottom:8px">⬇️</div><div style="font-size:.85rem;font-weight:600">Download Ticket</div><div style="font-size:.75rem;color:var(--ink3);margin-top:4px">E-ticket PDF</div></div>
+    <div style="background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:1.8rem;margin-bottom:8px">📅</div><div style="font-size:.85rem;font-weight:600">Reschedule</div><div style="font-size:.75rem;color:var(--ink3);margin-top:4px">Change date</div></div>
+    <div style="background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:1.8rem;margin-bottom:8px">❌</div><div style="font-size:.85rem;font-weight:600">Cancel</div><div style="font-size:.75rem;color:var(--ink3);margin-top:4px">Get refund</div></div>
+    <div style="background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:1.8rem;margin-bottom:8px">🧳</div><div style="font-size:.85rem;font-weight:600">Add Baggage</div><div style="font-size:.75rem;color:var(--ink3);margin-top:4px">Extra bags</div></div>
+    <div style="background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:1.8rem;margin-bottom:8px">📧</div><div style="font-size:.85rem;font-weight:600">Resend Ticket</div><div style="font-size:.75rem;color:var(--ink3);margin-top:4px">Send to email</div></div>
+  </div>
+</div>
+
+<!-- ══ PNR RESULT ══ -->
+<div class="page" id="pgPNRResult">
+  <div class="topbar">
+    <div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div>
+    <div class="topbar-right">
+      <button class="nav-btn" onclick="goPage('pgPNRSearch')">🔍 Search Another PNR</button>
+      <button class="back-btn" onclick="goPage('pgPNRSearch')">← Back</button>
+    </div>
+  </div>
+  <div class="breadcrumb"><span class="bc" onclick="goPage('pgHome')">Home</span> › <span class="bc" onclick="goPage('pgPNRSearch')">Manage Booking</span> › PNR Details</div>
+  <div class="pnr-result-wrap">
+    <!-- STATUS TOP -->
+    <div class="st-top" id="stTop">
+      <div class="st-icon" id="stIcon">✅</div>
+      <div class="st-info"><h2 id="stTitle">Booking Confirmed</h2><p id="stSub">Your flight is confirmed.</p></div>
+      <div class="st-pnr-val"><label>PNR</label><span class="pv" id="stPnr">ABCDEF</span></div>
+    </div>
+    <div class="pnr-grid">
+      <!-- LEFT -->
+      <div>
+        <!-- Flight Details -->
+        <div class="rcard">
+          <h3>✈️ Flight Details <span id="flBadge"></span></h3>
+          <div class="route-vis">
+            <div class="rv-pt">
+              <div class="rv-t" id="rvDep"></div>
+              <div class="rv-cy" id="rvFromCity"></div>
+              <div class="rv-ap" id="rvFromCode"></div>
+              <div class="rv-dt" id="rvDepDate"></div>
+            </div>
+            <div class="rv-mid">
+              <div style="font-size:1rem;margin-bottom:4px">✈️</div>
+              <div class="rv-ln"></div>
+              <div style="font-size:.75rem;color:var(--ink3)" id="rvDur"></div>
+              <div style="font-size:.72rem;font-weight:600" id="rvStop"></div>
+            </div>
+            <div class="rv-pt">
+              <div class="rv-t" id="rvArr"></div>
+              <div class="rv-cy" id="rvToCity"></div>
+              <div class="rv-ap" id="rvToCode"></div>
+              <div class="rv-dt" id="rvArrDate"></div>
+            </div>
+          </div>
+          <div class="info-grid" style="margin-top:12px">
+            <div class="info-item"><label>Airline</label><p class="hi" id="infAirline"></p></div>
+            <div class="info-item"><label>Flight No.</label><p class="hi" id="infFlight"></p></div>
+            <div class="info-item"><label>Aircraft</label><p>Airbus A320neo</p></div>
+            <div class="info-item"><label>Class</label><p>Economy</p></div>
+            <div class="info-item"><label>Seat</label><p class="hi" id="infSeat"></p></div>
+            <div class="info-item"><label>Booking Ref</label><p style="font-family:'JetBrains Mono',monospace;font-size:.75rem" id="infBkRef"></p></div>
+            <div class="info-item"><label>Booked On</label><p id="infBookedOn"></p></div>
+            <div class="info-item"><label>Terminal</label><p id="infTerminal"></p></div>
+          </div>
+        </div>
+        <!-- Passenger Details -->
+        <div class="rcard">
+          <h3>👤 Passenger Details</h3>
+          <table class="pax-table" width="100%">
+            <thead><tr><th>#</th><th>Name</th><th>Type</th><th>PAN/Passport</th><th>Seat</th><th>Meal</th><th>Status</th></tr></thead>
+            <tbody id="paxBody"></tbody>
+          </table>
+        </div>
+        <!-- Fare Breakdown -->
+        <div class="rcard">
+          <h3>💰 Fare Breakdown</h3>
+          <div id="fareBreak"></div>
+        </div>
+        <!-- Baggage -->
+        <div class="rcard">
+          <h3>🧳 Baggage Allowance</h3>
+          <div class="info-grid">
+            <div class="info-item"><label>Cabin Bag</label><p class="gn">1 × 7 kg ✅</p></div>
+            <div class="info-item"><label>Check-in</label><p class="gn">1 × 15 kg ✅</p></div>
+            <div class="info-item"><label>Extra Bag</label><p class="og">₹450/kg</p></div>
+            <div class="info-item"><label>Sports</label><p class="og">₹1,200</p></div>
+          </div>
+        </div>
+        <!-- Cancellation Policy -->
+        <div class="rcard">
+          <h3>❌ Cancellation Policy</h3>
+          <table class="pol-table" width="100%">
+            <thead><tr><th>Time Before Departure</th><th>Fee</th><th>Refund</th></tr></thead>
+            <tbody>
+              <tr><td>&gt; 7 days</td><td class="g-t">₹1,500</td><td class="g-t">Full refund minus fee</td></tr>
+              <tr><td>3–7 days</td><td class="o-t">₹2,500</td><td class="o-t">Partial refund</td></tr>
+              <tr><td>24–72 hours</td><td class="r-t">₹3,500</td><td class="r-t">Partial refund</td></tr>
+              <tr><td>&lt; 24 hours</td><td class="r-t">No Refund</td><td class="r-t">Non-refundable</td></tr>
+            </tbody>
+          </table>
+          <div id="cnclNote" style="margin-top:10px;padding:10px 12px;border-radius:6px;font-size:.78rem"></div>
+        </div>
+        <!-- GoDigit -->
+        <div class="rcard">
+          <h3>🛡️ GoDigit Insurance</h3>
+          <div class="info-grid">
+            <div class="info-item"><label>Policy ID</label><p class="hi" style="font-family:'JetBrains Mono',monospace;font-size:.75rem" id="infPolicy"></p></div>
+            <div class="info-item"><label>Plan</label><p class="gn">Basic Plan</p></div>
+            <div class="info-item"><label>Status</label><p id="infInsStatus"></p></div>
+            <div class="info-item"><label>Premium</label><p>₹199</p></div>
+            <div class="info-item"><label>Coverage</label><p>Up to ₹1,00,000</p></div>
+            <div class="info-item"><label>Valid Till</label><p id="infInsValid"></p></div>
+          </div>
+        </div>
+        <!-- Journey Timeline -->
+        <div class="rcard">
+          <h3>🗓️ Journey Timeline</h3>
+          <div>
+            <div class="tl-item"><div class="tl-lo"><div class="tl-dot-o done">✅</div><div class="tl-conn"></div></div><div class="tl-cont"><h4>Booking Confirmed</h4><p id="tlBooked"></p></div></div>
+            <div class="tl-item"><div class="tl-lo"><div class="tl-dot-o done">✅</div><div class="tl-conn"></div></div><div class="tl-cont"><h4>E-Ticket Issued</h4><p>Sent to john.doe@techcorp.com</p></div></div>
+            <div class="tl-item"><div class="tl-lo"><div class="tl-dot-o done">✅</div><div class="tl-conn"></div></div><div class="tl-cont"><h4>Payment Processed</h4><p id="tlPaid"></p></div></div>
+            <div class="tl-item"><div class="tl-lo"><div class="tl-dot-o active">✈️</div><div class="tl-conn"></div></div><div class="tl-cont"><h4>Web Check-in Opens</h4><p id="tlCheckin">48 hrs before departure</p></div></div>
+            <div class="tl-item"><div class="tl-lo"><div class="tl-dot-o up">🛫</div></div><div class="tl-cont"><h4>Departure</h4><p id="tlDepart"></p></div></div>
+          </div>
+        </div>
+        <!-- API Response -->
+        <div class="rcard">
+          <h3>📡 PNR API Response <span>Raw JSON from booking system</span></h3>
+          <div class="api-block" id="apiBlock"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div>
+        <!-- Quick Actions -->
+        <div class="rcard">
+          <h3>⚡ Quick Actions</h3>
+          <div class="act-btns">
+            <button class="act-btn success" onclick="showToast('⬇️ E-ticket downloaded!')">
+              <span class="ab-icon">⬇️</span><div class="ab-tx">Download E-Ticket<span>PDF boarding pass</span></div></button>
+            <button class="act-btn" onclick="showToast('📧 E-ticket resent to your email!')">
+              <span class="ab-icon">📧</span><div class="ab-tx">Resend E-Ticket<span>To registered email</span></div></button>
+            <button class="act-btn" onclick="openReschedule()">
+              <span class="ab-icon">📅</span><div class="ab-tx">Reschedule Flight<span>Change date or time</span></div></button>
+            <button class="act-btn" onclick="openBaggage()">
+              <span class="ab-icon">🧳</span><div class="ab-tx">Add Baggage<span>Extra check-in bags</span></div></button>
+            <button class="act-btn" onclick="showToast('🍽️ Meal selection opens 24hrs before departure')">
+              <span class="ab-icon">🍽️</span><div class="ab-tx">Select Meal<span>Pre-book your meal</span></div></button>
+            <button class="act-btn" onclick="showToast('💺 Web check-in opens 48hrs before departure')">
+              <span class="ab-icon">💺</span><div class="ab-tx">Web Check-In<span>Opens 48hrs before</span></div></button>
+            <button class="act-btn danger" id="cancelBtn" onclick="openCancelModal()">
+              <span class="ab-icon">❌</span><div class="ab-tx">Cancel Booking<span id="cnclNote2">Refund eligible</span></div></button>
+          </div>
+        </div>
+        <!-- Booking Summary -->
+        <div class="rcard">
+          <h3>📋 Summary</h3>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-bottom:1px solid var(--border)"><span style="color:var(--ink3)">PNR</span><strong style="font-family:'JetBrains Mono',monospace;color:var(--primary)" id="sbPnr"></strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-bottom:1px solid var(--border)"><span style="color:var(--ink3)">Booking ID</span><strong style="font-family:'JetBrains Mono',monospace;font-size:.72rem" id="sbBkId"></strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-bottom:1px solid var(--border)"><span style="color:var(--ink3)">Total Paid</span><strong style="color:var(--green)" id="sbTotal"></strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-bottom:1px solid var(--border)"><span style="color:var(--ink3)">Payment</span><strong>Corporate Account</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0"><span style="color:var(--ink3)">GST Invoice</span><strong style="color:var(--primary);cursor:pointer" onclick="showToast('GST invoice downloaded!')">Download ↓</strong></div>
+          </div>
+        </div>
+        <!-- Policy -->
+        <div class="rcard">
+          <h3>📋 Policy Status</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:.82rem">
+            <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-light);border-radius:6px;color:var(--green)"><span>✅</span><span>Economy class — Compliant</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-light);border-radius:6px;color:var(--green)"><span>✅</span><span>Amount within budget</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--green-light);border-radius:6px;color:var(--green)"><span>✅</span><span>No approval required</span></div>
+          </div>
+        </div>
+        <!-- Help -->
+        <div class="rcard">
+          <h3>🆘 Need Help?</h3>
+          <div style="font-size:.82rem;color:var(--ink2);line-height:2">
+            <div>📞 <strong>24/7 Helpline:</strong> 1800-123-4567</div>
+            <div>📧 <strong>Email:</strong> support@smartbuy.com</div>
+            <div>💬 <strong>Live Chat:</strong> Available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NOT FOUND ══ -->
+<div class="page" id="pgPNRNotFound">
+  <div class="topbar"><div class="logo" onclick="goPage('pgHome')"><div class="logo-icon">✈</div> SmartBuy</div></div>
+  <div style="text-align:center;padding:80px 24px;max-width:400px;margin:0 auto">
+    <div style="font-size:4rem;margin-bottom:16px">🔍</div>
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px">Booking Not Found</h3>
+    <p style="font-size:.85rem;color:var(--ink3);margin-bottom:24px">We couldn't find a booking with PNR "<strong id="notFoundPnr"></strong>". Please check and try again.</p>
+    <button class="btn-retrieve" style="max-width:300px;margin:0 auto" onclick="goPage('pgPNRSearch')">← Try Again</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-ov" id="cancelModal">
+  <div class="modal">
+    <h3>❌ Cancel Booking</h3>
+    <div class="modal-warn">⚠️ This action cannot be undone once confirmed.</div>
+    <p>Are you sure you want to cancel this booking?</p>
+    <div style="background:var(--surface2);border-radius:8px;padding:12px;font-size:.82rem;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--ink3)">Cancellation Fee:</span><strong style="color:var(--red)">₹1,500</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--ink3)">Refund Amount:</span><strong style="color:var(--green)" id="refundAmt">₹2,977</strong></div>
+      <div style="display:flex;justify-content:space-between"><span style="color:var(--ink3)">Refund Timeline:</span><strong>5–7 business days</strong></div>
+    </div>
+    <div class="modal-acts">
+      <button class="btn-sm outline" onclick="closeModal('cancelModal')">Keep Booking</button>
+      <button class="btn-sm danger" onclick="confirmCancel()">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="rescheduleModal">
+  <div class="modal">
+    <h3>📅 Reschedule Flight</h3>
+    <p>Select your new travel date. Fee: ₹2,000 + fare difference.</p>
+    <div class="rsch-form">
+      <div><label>NEW DATE</label><input type="date" value="2025-02-18"/></div>
+      <div><label>PREFERRED TIME</label><select><option>Any Time</option><option>Morning (6–12)</option><option>Afternoon (12–18)</option><option>Evening (18–24)</option></select></div>
+      <div><label>REASON</label><select><option>Meeting rescheduled</option><option>Personal reasons</option><option>Other</option></select></div>
+    </div>
+    <div style="background:var(--accent-light);border-radius:6px;padding:10px;font-size:.78rem;color:#92400e;margin-bottom:14px">⚠️ Reschedule fee: ₹2,000 + fare difference</div>
+    <div class="modal-acts">
+      <button class="btn-sm outline" onclick="closeModal('rescheduleModal')">Cancel</button>
+      <button class="btn-sm primary" onclick="closeModal('rescheduleModal');showToast('✅ Reschedule request submitted! New options sent to email.')">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="baggageModal">
+  <div class="modal">
+    <h3>🧳 Add Extra Baggage</h3>
+    <p>Select additional check-in baggage for your journey.</p>
+    <div class="rsch-form">
+      <div><label>EXTRA WEIGHT</label>
+        <select id="extraBag">
+          <option>5 kg — ₹450</option><option>10 kg — ₹900</option>
+          <option>15 kg — ₹1,350</option><option>20 kg — ₹1,800</option>
+        </select>
+      </div>
+    </div>
+    <div style="background:var(--primary-light);border-radius:6px;padding:10px;font-size:.78rem;color:var(--primary);margin-bottom:14px">📌 Already included: 15 kg check-in + 7 kg cabin</div>
+    <div class="modal-acts">
+      <button class="btn-sm outline" onclick="closeModal('baggageModal')">Cancel</button>
+      <button class="btn-sm primary" onclick="confirmBaggage()">Add & Pay →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+//  DATA
+// ════════════════════════════════════════
+const FLIGHTS=[
+  {airline:'IndiGo',logo:'🟦',num:'6E-201',dep:'06:00',arr:'08:45',dur:'2h 45m',stops:'Non-stop',price:3499,tags:['ch'],refund:true},
+  {airline:'Air India',logo:'🔴',num:'AI-502',dep:'07:30',arr:'10:15',dur:'2h 45m',stops:'Non-stop',price:4299,tags:['ml'],refund:true},
+  {airline:'Vistara',logo:'🟣',num:'UK-831',dep:'09:15',arr:'11:50',dur:'2h 35m',stops:'Non-stop',price:4899,tags:['fs','ml'],refund:true},
+  {airline:'SpiceJet',logo:'🟠',num:'SG-112',dep:'11:00',arr:'14:20',dur:'3h 20m',stops:'1 Stop',price:2999,tags:['ch'],refund:false},
+  {airline:'IndiGo',logo:'🟦',num:'6E-875',dep:'14:30',arr:'17:10',dur:'2h 40m',stops:'Non-stop',price:3799,tags:[],refund:true},
+  {airline:'Air India',logo:'🔴',num:'AI-801',dep:'19:45',arr:'22:30',dur:'2h 45m',stops:'Non-stop',price:3999,tags:['ml'],refund:true},
+];
+const HOTELS=[
+  {name:'Radisson Blu, Dwarka',stars:4,rating:'4.2',loc:'Dwarka, New Delhi',emoji:'🏢',price:3999,ams:['Free WiFi','Pool','Restaurant','Gym','Parking'],policy:'✅ Within Policy'},
+  {name:'Holiday Inn Express',stars:3,rating:'4.0',loc:'Connaught Place',emoji:'🏨',price:2999,ams:['Free WiFi','Restaurant','AC'],policy:'✅ Within Policy'},
+  {name:'Lemon Tree Hotel',stars:3,rating:'3.8',loc:'Aerocity',emoji:'🍋',price:2499,ams:['Free WiFi','Restaurant','Parking'],policy:'✅ Within Policy'},
+  {name:'The Leela Palace',stars:5,rating:'4.8',loc:'Chanakyapuri',emoji:'👑',price:12999,ams:['Free WiFi','Pool','Spa','Restaurant','Gym'],policy:'⚠️ Approval Required'},
+  {name:'Ibis Delhi Airport',stars:3,rating:'3.9',loc:'Aerocity',emoji:'🏩',price:1999,ams:['Free WiFi','Restaurant'],policy:'✅ Within Policy'},
+];
+const BUSES=[
+  {op:'VRL Travels',type:'AC Sleeper',dep:'22:00',arr:'02:30+1',dur:'4h 30m',price:450,seats:12},
+  {op:'SRS Travels',type:'AC Seater',dep:'06:00',arr:'09:00',dur:'3h 00m',price:350,seats:8},
+  {op:'KSRTC Airavat',type:'AC Pushback',dep:'07:30',arr:'10:30',dur:'3h 00m',price:280,seats:20},
+  {op:'Greenline',type:'Non-AC Seater',dep:'09:00',arr:'12:30',dur:'3h 30m',price:199,seats:15},
+];
+const TRAINS=[
+  {num:'12657',name:'KSK Express',dep:'08:00',arr:'06:00+1',dur:'22h',classes:['SL ₹445','3A ₹1,195','2A ₹1,710'],avail:'Available'},
+  {num:'22691',name:'Rajdhani Express',dep:'20:00',arr:'10:05+1',dur:'14h 05m',classes:['3A ₹2,095','2A ₹2,985','1A ₹4,920'],avail:'Available'},
+  {num:'12649',name:'Sampark Kranti',dep:'10:30',arr:'08:00+1',dur:'21h 30m',classes:['SL ₹435','3A ₹1,155','2A ₹1,660'],avail:'RAC'},
+];
+const BOOKINGS={
+  'ABCDEF':{status:'confirmed',pnr:'ABCDEF',bookingId:'BK-1705892400',airline:'IndiGo',flightNum:'6E-201',dep:'06:00',arr:'08:45',dur:'2h 45m',stops:'Non-stop',fromCity:'Bangalore',fromCode:'BLR',fromTerminal:'T1',toCity:'New Delhi',toCode:'DEL',toTerminal:'T3',depDate:'15 Feb 2025',arrDate:'15 Feb 2025',bookedOn:'10 Jan 2025, 10:35 AM',passengers:[{name:'John Doe',type:'Adult',pan:'ABCDE1234F',seat:'23A',meal:'Vegetarian',status:'confirmed'}],baseFare:3499,taxes:630,convFee:149,insurance:199,total:4477,refundable:true,insurancePolicyId:'GD-78901'},
+  'XY7890':{status:'confirmed',pnr:'XY7890',bookingId:'BK-1705960000',airline:'Air India',flightNum:'AI-502',dep:'07:30',arr:'10:15',dur:'2h 45m',stops:'Non-stop',fromCity:'Bangalore',fromCode:'BLR',fromTerminal:'T2',toCity:'New Delhi',toCode:'DEL',toTerminal:'T2',depDate:'20 Feb 2025',arrDate:'20 Feb 2025',bookedOn:'12 Jan 2025, 03:10 PM',passengers:[{name:'Priya Sharma',type:'Adult',pan:'PQRST5678Y',seat:'14C',meal:'Non-Veg',status:'confirmed'},{name:'Rahul Sharma',type:'Adult',pan:'LMNOP9012Z',seat:'14D',meal:'None',status:'confirmed'}],baseFare:4299,taxes:774,convFee:149,insurance:199,total:5421,refundable:true,insurancePolicyId:'GD-45678'},
+  'PQ1234':{status:'confirmed',pnr:'PQ1234',bookingId:'BK-1706050000',airline:'Vistara',flightNum:'UK-831',dep:'09:15',arr:'11:50',dur:'2h 35m',stops:'Non-stop',fromCity:'Bangalore',fromCode:'BLR',fromTerminal:'T1',toCity:'New Delhi',toCode:'DEL',toTerminal:'T3',depDate:'25 Mar 2025',arrDate:'25 Mar 2025',bookedOn:'15 Jan 2025, 11:20 AM',passengers:[{name:'Arun Kumar',type:'Adult',pan:'EFGHI6789K',seat:'11A',meal:'Jain',status:'confirmed'}],baseFare:4899,taxes:882,convFee:149,insurance:349,total:6279,refundable:true,insurancePolicyId:'GD-11223'},
+  'CANCEL':{status:'cancelled',pnr:'CANCEL',bookingId:'BK-1704500000',airline:'SpiceJet',flightNum:'SG-112',dep:'11:00',arr:'14:20',dur:'3h 20m',stops:'1 Stop',fromCity:'Bangalore',fromCode:'BLR',fromTerminal:'T1',toCity:'New Delhi',toCode:'DEL',toTerminal:'T1',depDate:'10 Jan 2025',arrDate:'10 Jan 2025',bookedOn:'02 Jan 2025, 09:15 AM',passengers:[{name:'Meera Nair',type:'Adult',pan:'UVWXY3456M',seat:'32B',meal:'Vegetarian',status:'cancelled'}],baseFare:2999,taxes:540,convFee:149,insurance:199,total:3887,refundable:false,insurancePolicyId:'GD-99001'},
+};
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+let selFlight=null,currentBk=null,currentPnr='';
+
+// ════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════
+function goPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function doLogin(){const e=document.getElementById('loginEmail').value||'john.doe@techcorp.com';const n=e.split('@')[0].replace('.',' ').replace(/\b\w/g,c=>c.toUpperCase());document.getElementById('userGreet').textContent=`Welcome, ${n.split(' ')[0]}`;goPage('pgHome')}
+function setTrip(btn,t){document.querySelectorAll('.trip-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('retF').style.display=t==='round'?'flex':'none'}
+function swapCities(){const f=document.getElementById('flFrom'),t=document.getElementById('flTo');[f.value,t.value]=[t.value,f.value]}
+function selPlan(el){document.querySelectorAll('.gd-plan').forEach(p=>p.classList.remove('sel'));el.classList.add('sel')}
+function selTitle(el){document.querySelectorAll('.gen-opt').forEach(o=>o.classList.remove('active'));el.classList.add('active')}
+function toggleGST(){document.getElementById('gstFlds').style.display=document.getElementById('gstTgl').checked?'block':'none'}
+function quickPNR(pnr){document.getElementById('pnrInput').value=pnr;document.getElementById('lnInput').value='Doe';retrieveBooking()}
+
+// ════════════════════════════════════════
+//  FLIGHT FLOW
+// ════════════════════════════════════════
+function renderFlightCards(){
+  const c=document.getElementById('flightCards');c.innerHTML='';
+  FLIGHTS.forEach((f,i)=>{
+    const tax=Math.round(f.price*.18);
+    const d=document.createElement('div');d.className='fl-card';
+    d.innerHTML=`<div class="fc-row">
+      <div class="air-logo">${f.logo}</div>
+      <div class="fc-times">
+        <div class="fc-t"><div class="t">${f.dep}</div><div class="ap">BLR</div></div>
+        <div class="fc-dur"><div class="d">${f.dur}</div><div class="ln"></div><div class="st" style="color:${f.stops==='Non-stop'?'var(--green)':'var(--orange)'}">${f.stops}</div></div>
+        <div class="fc-t"><div class="t">${f.arr}</div><div class="ap">DEL</div></div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="fc-price"><div class="pr">₹${f.price.toLocaleString()}</div><div class="pp">per person</div><div style="font-size:.7rem;color:var(--ink3)">+₹${tax} taxes</div></div>
+      <button class="btn-sel" onclick="selectFlight(${i})" style="margin-left:12px">Select</button>
+    </div>
+    <div class="fc-tags" style="margin-top:10px">
+      <span style="font-size:.75rem;color:var(--ink2)">${f.airline} · ${f.num}</span>
+      ${f.tags.includes('ch')?'<span class="fc-tag ch">💰 Cheapest</span>':''}
+      ${f.tags.includes('fs')?'<span class="fc-tag fs">⚡ Fastest</span>':''}
+      ${f.tags.includes('ml')?'<span class="fc-tag ml">🍽️ Meal</span>':''}
+      ${f.refund?'<span class="fc-tag rf">✅ Refundable</span>':'<span class="fc-tag" style="background:var(--red-light);color:var(--red)">❌ Non-Refundable</span>'}
+    </div>`;
+    c.appendChild(d);
+  });
+}
+
+function selectFlight(i){
+  selFlight=FLIGHTS[i];
+  const tax=Math.round(selFlight.price*.18);
+  const tot=selFlight.price+tax+149+199;
+  document.getElementById('dlLogo').textContent=selFlight.logo;
+  document.getElementById('dlName').textContent=selFlight.airline;
+  document.getElementById('dlNum').textContent=selFlight.num;
+  document.getElementById('dlDep').textContent=selFlight.dep;
+  document.getElementById('dlDepAp').textContent='Kempegowda International Airport, Bangalore';
+  document.getElementById('dlArr').textContent=selFlight.arr;
+  document.getElementById('dlArrAp').textContent='Indira Gandhi International Airport, New Delhi';
+  document.getElementById('dlDur').textContent=selFlight.dur;
+  document.getElementById('ps-base').textContent='₹'+selFlight.price.toLocaleString();
+  document.getElementById('ps-tax').textContent='₹'+tax.toLocaleString();
+  document.getElementById('ps-total').textContent='₹'+tot.toLocaleString();
+  document.getElementById('cps-base').textContent='₹'+selFlight.price.toLocaleString();
+  document.getElementById('cps-tax').textContent='₹'+tax.toLocaleString();
+  document.getElementById('cps-total').textContent='₹'+tot.toLocaleString();
+  goPage('pgFlightDetail');
+}
+
+function goBookingRequest(){
+  if(!selFlight)return;
+  currentPnr=genPNR();
+  const tax=Math.round(selFlight.price*.18);
+  const tot=selFlight.price+tax+149+199;
+  document.getElementById('reqJson').innerHTML=`{
+  <span class="jk">"requestId"</span>: <span class="jv">"REQ-${Date.now()}"</span>,
+  <span class="jk">"channel"</span>: <span class="jv">"SMARTBUY"</span>,
+  <span class="jk">"companyCode"</span>: <span class="jv">"TECHCORP"</span>,
+  <span class="jk">"flight"</span>: {
+    <span class="jk">"airline"</span>: <span class="jv">"${selFlight.airline}"</span>,
+    <span class="jk">"flightNumber"</span>: <span class="jv">"${selFlight.num}"</span>,
+    <span class="jk">"origin"</span>: <span class="jv">"BLR"</span>, <span class="jk">"destination"</span>: <span class="jv">"DEL"</span>,
+    <span class="jk">"departureDate"</span>: <span class="jv">"2025-02-15"</span>,
+    <span class="jk">"departureTime"</span>: <span class="jv">"${selFlight.dep}"</span>,
+    <span class="jk">"class"</span>: <span class="jv">"ECONOMY"</span>
+  },
+  <span class="jk">"passengers"</span>: [{ <span class="jk">"title"</span>: <span class="jv">"MR"</span>, <span class="jk">"firstName"</span>: <span class="jv">"JOHN"</span>, <span class="jk">"lastName"</span>: <span class="jv">"DOE"</span>, <span class="jk">"pan"</span>: <span class="jv">"ABCDE1234F"</span> }],
+  <span class="jk">"contactInfo"</span>: { <span class="jk">"email"</span>: <span class="jv">"john.doe@techcorp.com"</span>, <span class="jk">"phone"</span>: <span class="jv">"+919876543210"</span> },
+  <span class="jk">"insurance"</span>: { <span class="jk">"provider"</span>: <span class="jv">"GODIGIT"</span>, <span class="jk">"plan"</span>: <span class="jv">"BASIC"</span>, <span class="jk">"premium"</span>: <span class="jn">199</span> },
+  <span class="jk">"fareDetails"</span>: { <span class="jk">"baseFare"</span>: <span class="jn">${selFlight.price}</span>, <span class="jk">"taxes"</span>: <span class="jn">${tax}</span>, <span class="jk">"totalAmount"</span>: <span class="jn">${tot}</span>, <span class="jk">"currency"</span>: <span class="jv">"INR"</span> }
+}`;
+  document.getElementById('procBanner').style.display='flex';
+  document.getElementById('resSection').style.display='none';
+  goPage('pgBooking');
+  setTimeout(()=>{
+    document.getElementById('procBanner').style.display='none';
+    document.getElementById('resSection').style.display='block';
+    document.getElementById('pnrDisplay').textContent=currentPnr;
+    document.getElementById('resJson').innerHTML=`{
+  <span class="jk">"status"</span>: <span class="jv">"CONFIRMED"</span>,
+  <span class="jk">"pnr"</span>: <span class="jv">"${currentPnr}"</span>,
+  <span class="jk">"bookingId"</span>: <span class="jv">"BK-${Date.now()}"</span>,
+  <span class="jk">"ticketNumber"</span>: <span class="jv">"${Math.floor(1e9+Math.random()*9e9)}"</span>,
+  <span class="jk">"seatAssigned"</span>: <span class="jv">"23A"</span>,
+  <span class="jk">"fareBreakup"</span>: { <span class="jk">"baseFare"</span>: <span class="jn">${selFlight.price}</span>, <span class="jk">"taxes"</span>: <span class="jn">${tax}</span>, <span class="jk">"grandTotal"</span>: <span class="jn">${tot}</span> },
+  <span class="jk">"eTicketSent"</span>: <span class="js">true</span>,
+  <span class="jk">"insurance"</span>: { <span class="jk">"policyId"</span>: <span class="jv">"GD-${Math.floor(Math.random()*99999)}"</span>, <span class="jk">"status"</span>: <span class="jv">"ACTIVE"</span> },
+  <span class="jk">"createdAt"</span>: <span class="jv">"${new Date().toISOString()}"</span>
+}`;
+    document.getElementById('bkSummary').innerHTML=[['PNR',currentPnr],['Flight',`${selFlight.airline} ${selFlight.num}`],['Route','BLR → DEL'],['Date','15 Feb 2025'],['Departure',selFlight.dep],['Seat','23A (Window)'],['Total','₹'+tot.toLocaleString()],['Insurance','GoDigit Basic ✅']].map(([l,v])=>`<div class="bd-item"><label>${l}</label><p>${v}</p></div>`).join('');
+    document.getElementById('cfPnr').textContent=currentPnr;
+    document.getElementById('cfFlight').textContent=`${selFlight.airline} ${selFlight.num}`;
+    document.getElementById('cfDate').textContent=`15 Feb 2025 · ${selFlight.dep}`;
+    document.getElementById('cfTotal').textContent='₹'+tot.toLocaleString();
+    // Add this PNR to bookings for retrieval
+    BOOKINGS[currentPnr]={status:'confirmed',pnr:currentPnr,bookingId:`BK-${Date.now()}`,airline:selFlight.airline,flightNum:selFlight.num,dep:selFlight.dep,arr:selFlight.arr,dur:selFlight.dur,stops:selFlight.stops,fromCity:'Bangalore',fromCode:'BLR',fromTerminal:'T1',toCity:'New Delhi',toCode:'DEL',toTerminal:'T3',depDate:'15 Feb 2025',arrDate:'15 Feb 2025',bookedOn:new Date().toLocaleString(),passengers:[{name:'John Doe',type:'Adult',pan:'ABCDE1234F',seat:'23A',meal:'Vegetarian',status:'confirmed'}],baseFare:selFlight.price,taxes:tax,convFee:149,insurance:199,total:tot,refundable:selFlight.refund,insurancePolicyId:`GD-${Math.floor(Math.random()*99999)}`};
+  },2500);
+}
+
+// ════════════════════════════════════════
+//  HOTEL FLOW
+// ════════════════════════════════════════
+function searchHotels(){
+  const c=document.getElementById('hotelCards');c.innerHTML='';
+  HOTELS.forEach((h,i)=>{
+    const d=document.createElement('div');d.className='hotel-card';
+    const clrs=[['#1e40af','#3b82f6'],['#065f46','#059669'],['#7c3aed','#a855f7'],['#92400e','#d97706'],['#1e3a8a','#2563eb']];
+    d.innerHTML=`<div class="hotel-img" style="background:linear-gradient(135deg,${clrs[i][0]},${clrs[i][1]})">${h.emoji}</div>
+      <div class="hotel-info"><div class="hotel-name">${h.name}</div><div class="hotel-loc">📍 ${h.loc}</div>
+        <div class="hotel-stars">${'⭐'.repeat(h.stars)}</div>
+        <div class="hotel-ams">${h.ams.map(a=>`<span class="hotel-am">${a}</span>`).join('')}</div>
+        <div style="margin-top:8px;font-size:.75rem;color:${h.policy.includes('✅')?'var(--green)':'var(--orange)'}">${h.policy}</div></div>
+      <div class="hotel-price-col">
+        <div><div class="rat-badge">${h.rating} ★</div><div class="hotel-pr">₹${h.price.toLocaleString()}</div><div class="hotel-pr-sub">per night</div></div>
+        <button class="btn-sel" onclick="bookHotel(${i})" style="margin-top:10px">Book Now</button>
+      </div>`;
+    c.appendChild(d);
+  });
+  goPage('pgHotelList');
+}
+function bookHotel(i){document.getElementById('hotelName').textContent=HOTELS[i].name;document.getElementById('hotelTotal').textContent='₹'+(HOTELS[i].price*2+200).toLocaleString();goPage('pgHotelConfirm')}
+
+// ════════════════════════════════════════
+//  BUS FLOW
+// ════════════════════════════════════════
+function searchBus(){
+  const c=document.getElementById('busCards');c.innerHTML='';
+  BUSES.forEach((b,i)=>{
+    const d=document.createElement('div');d.className='tp-card';
+    d.innerHTML=`<div class="tc-row"><div class="tc-op">${b.op}<span>${b.type}</span></div>
+      <div class="tc-ts"><div class="tc-tb"><div class="t">${b.dep}</div><div class="s">BLR</div></div>
+        <div class="tc-dur">→ ${b.dur}</div>
+        <div class="tc-tb"><div class="t">${b.arr}</div><div class="s">MYS</div></div></div>
+      <div class="tc-pr"><div class="p">₹${b.price}</div><div class="seat-badge">${b.seats} seats left</div>
+        <button class="btn-sel" onclick="selectBus(${i})" style="margin-top:6px">Select Seats</button></div></div>`;
+    c.appendChild(d);
+  });
+  goPage('pgBusList');
+}
+function selectBus(i){
+  const b=BUSES[i];
+  document.getElementById('busSeatOp').textContent=`${b.op} · ${b.type} · ${b.dep} → ${b.arr}`;
+  document.getElementById('busBase').textContent='₹'+b.price;
+  document.getElementById('busTot').textContent='₹'+(b.price+45);
+  renderBusSeat();goPage('pgBusSeat');
+}
+function renderBusSeat(){
+  const m=document.getElementById('busSeatMap');m.innerHTML='';
+  const booked=[2,5,8,12,15,18,21,24];
+  for(let r=1;r<=9;r++){
+    const row=document.createElement('div');row.className='seat-row-wrap';
+    row.innerHTML=`<span class="sr-lbl">${r}</span>`;
+    ['A','B','','C','D'].forEach(col=>{
+      if(!col){const a=document.createElement('div');a.className='seat-aisle';row.appendChild(a);return}
+      const n=(r-1)*4+['A','B','C','D'].indexOf(col)+1;
+      const s=document.createElement('div');
+      s.className=`seat ${booked.includes(n)?'bk':'av'}`;s.textContent=col;
+      if(!booked.includes(n))s.onclick=()=>selBusSeat(s,`${r}${col}`);
+      row.appendChild(s);
+    });
+    m.appendChild(row);
+  }
+}
+function selBusSeat(el,lbl){
+  document.querySelectorAll('.seat.sl').forEach(s=>{s.classList.remove('sl');s.classList.add('av')});
+  el.classList.remove('av');el.classList.add('sl');
+  document.getElementById('selSeatInfo').style.display='block';
+  document.getElementById('selSeatLbl').textContent=lbl;
+}
+function confirmBusBook(){goPage('pgHome');showToast('🚌 Bus booked! Ticket sent to your email.')}
+
+// ════════════════════════════════════════
+//  TRAIN FLOW
+// ════════════════════════════════════════
+function searchTrain(){
+  const c=document.getElementById('trainCards');c.innerHTML='';
+  TRAINS.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='tp-card';
+    d.innerHTML=`<div class="tc-row"><div class="tc-op">${t.num} ${t.name}<span>${t.avail==='RAC'?'🟡 RAC':'🟢 Available'}</span></div>
+      <div class="tc-ts"><div class="tc-tb"><div class="t">${t.dep}</div><div class="s">SBC</div></div>
+        <div class="tc-dur">→ ${t.dur}</div>
+        <div class="tc-tb"><div class="t">${t.arr}</div><div class="s">NDLS</div></div></div>
+      <div class="tc-pr">
+        ${t.classes.map(cl=>`<div style="font-size:.78rem;font-weight:600;color:var(--primary)">${cl}</div>`).join('')}
+        <button class="btn-sel" onclick="bookTrain(${i})" style="margin-top:8px">Book Now</button>
+      </div></div>`;
+    c.appendChild(d);
+  });
+  goPage('pgTrainList');
+}
+function bookTrain(i){
+  document.getElementById('trainPnr').textContent=genPNR();
+  document.getElementById('trainName').textContent=`${TRAINS[i].num} ${TRAINS[i].name}`;
+  document.getElementById('trainTot').textContent='₹1,195';
+  goPage('pgTrainConfirm');
+}
+
+// ════════════════════════════════════════
+//  PNR RETRIEVAL
+// ════════════════════════════════════════
+function switchPNRTab(btn,tabId){
+  document.querySelectorAll('.pnr-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  ['byPnr','byEmail'].forEach(id=>document.getElementById(id).style.display=id===tabId?'block':'none');
+}
+function fillPNR(pnr){document.getElementById('pnrInput').value=pnr;document.getElementById('lnInput').value='Doe'}
+function retrieveBooking(){
+  const pnr=(document.getElementById('pnrInput').value||'').toUpperCase().trim();
+  if(!pnr){showToast('⚠️ Please enter a PNR number');return}
+  const bk=BOOKINGS[pnr];
+  if(!bk){document.getElementById('notFoundPnr').textContent=pnr;goPage('pgPNRNotFound');return}
+  currentBk=bk;renderPNRResult(bk);goPage('pgPNRResult');
+}
+
+function renderPNRResult(b){
+  // Status
+  const stTop=document.getElementById('stTop');
+  stTop.className=`st-top ${b.status}`;
+  const icons={confirmed:'✅',cancelled:'❌',pending:'⏳'};
+  const titles={confirmed:'Booking Confirmed',cancelled:'Booking Cancelled',pending:'Processing'};
+  document.getElementById('stIcon').textContent=icons[b.status];
+  document.getElementById('stTitle').textContent=titles[b.status];
+  document.getElementById('stSub').textContent=b.status==='confirmed'?`Your flight is confirmed. E-ticket sent to john.doe@techcorp.com`:b.status==='cancelled'?'This booking was cancelled. Refund has been processed.':'Your booking is being processed.';
+  document.getElementById('stPnr').textContent=b.pnr;
+  document.getElementById('flBadge').textContent=b.status==='confirmed'?'🟢 Confirmed':b.status==='cancelled'?'🔴 Cancelled':'🟡 Pending';
+
+  // Route
+  document.getElementById('rvDep').textContent=b.dep;
+  document.getElementById('rvArr').textContent=b.arr;
+  document.getElementById('rvFromCity').textContent=b.fromCity;
+  document.getElementById('rvFromCode').textContent=`${b.fromCode} · ${b.fromTerminal}`;
+  document.getElementById('rvToCity').textContent=b.toCity;
+  document.getElementById('rvToCode').textContent=`${b.toCode} · ${b.toTerminal}`;
+  document.getElementById('rvDepDate').textContent=b.depDate;
+  document.getElementById('rvArrDate').textContent=b.arrDate;
+  document.getElementById('rvDur').textContent=b.dur;
+  document.getElementById('rvStop').textContent=b.stops;
+  document.getElementById('rvStop').style.color=b.stops==='Non-stop'?'var(--green)':'var(--orange)';
+
+  // Info fields
+  document.getElementById('infAirline').textContent=b.airline;
+  document.getElementById('infFlight').textContent=b.flightNum;
+  document.getElementById('infSeat').textContent=b.passengers.map(p=>p.seat).join(', ');
+  document.getElementById('infBkRef').textContent=b.bookingId;
+  document.getElementById('infBookedOn').textContent=b.bookedOn;
+  document.getElementById('infTerminal').textContent=`${b.fromCode} ${b.fromTerminal} → ${b.toCode} ${b.toTerminal}`;
+  document.getElementById('infPolicy').textContent=b.insurancePolicyId;
+  document.getElementById('infInsValid').textContent=b.depDate;
+  document.getElementById('infInsStatus').textContent=b.status==='cancelled'?'Expired ❌':'Active ✅';
+  document.getElementById('infInsStatus').style.color=b.status==='cancelled'?'var(--red)':'var(--green)';
+
+  // Passengers
+  document.getElementById('paxBody').innerHTML=b.passengers.map((p,i)=>`<tr>
+    <td>${i+1}</td><td><strong>${p.name}</strong></td><td>${p.type}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:.78rem">${p.pan}</td>
+    <td><strong style="color:var(--primary)">${p.seat}</strong></td>
+    <td>${p.meal}</td>
+    <td><span class="st-pill ${p.status}">${p.status}</span></td></tr>`).join('');
+
+  // Fare
+  document.getElementById('fareBreak').innerHTML=`
+    <div class="fare-row"><label>Base Fare (${b.passengers.length} pax)</label><span>₹${b.baseFare.toLocaleString()}</span></div>
+    <div class="fare-row"><label>YQ — Fuel Surcharge</label><span>₹${Math.round(b.baseFare*.1).toLocaleString()}</span></div>
+    <div class="fare-row"><label>YT — PSF + ASF</label><span>₹${Math.round(b.taxes*.4).toLocaleString()}</span></div>
+    <div class="fare-row"><label>K3 — GST on Fare</label><span>₹${Math.round(b.taxes*.3).toLocaleString()}</span></div>
+    <div class="fare-row"><label>Other Taxes</label><span>₹${Math.round(b.taxes*.3).toLocaleString()}</span></div>
+    <div class="fare-row"><label>Convenience Fee</label><span>₹${b.convFee}</span></div>
+    <div class="fare-row"><label>GoDigit Insurance</label><span>₹${b.insurance}</span></div>
+    <div class="fare-row tot"><label>Total Paid</label><span>₹${b.total.toLocaleString()}</span></div>`;
+
+  // Cancel note
+  const cnEl=document.getElementById('cnclNote');
+  cnEl.style.background=b.status==='confirmed'?'var(--green-light)':'var(--red-light)';
+  cnEl.style.color=b.status==='confirmed'?'var(--green)':'var(--red)';
+  cnEl.textContent=b.status==='confirmed'?`✅ You can cancel this flight. Refund: ₹${(b.total-1500).toLocaleString()} (fee: ₹1,500)`:'❌ This booking has already been cancelled.';
+
+  // Sidebar
+  document.getElementById('sbPnr').textContent=b.pnr;
+  document.getElementById('sbBkId').textContent=b.bookingId;
+  document.getElementById('sbTotal').textContent='₹'+b.total.toLocaleString();
+  document.getElementById('refundAmt').textContent='₹'+(b.total-1500).toLocaleString();
+  document.getElementById('cnclNote2').textContent=b.refundable?'Refund eligible':'Non-refundable';
+
+  // Cancel btn
+  const cBtn=document.getElementById('cancelBtn');
+  if(b.status==='cancelled'){cBtn.disabled=true;cBtn.style.opacity='.4';cBtn.style.cursor='not-allowed';}
+  else{cBtn.disabled=false;cBtn.style.opacity='1';cBtn.style.cursor='pointer';}
+
+  // Timeline
+  document.getElementById('tlBooked').textContent=b.bookedOn;
+  document.getElementById('tlPaid').textContent=`₹${b.total.toLocaleString()} via Corporate Account`;
+  document.getElementById('tlDepart').textContent=`${b.depDate} · ${b.dep} · ${b.fromCode}`;
+
+  // API
+  document.getElementById('apiBlock').innerHTML=`<span class="jc">// GET /api/v2/bookings/pnr/${b.pnr}</span>
+{
+  <span class="jk">"status"</span>: <span class="jv">"${b.status.toUpperCase()}"</span>,
+  <span class="jk">"pnr"</span>: <span class="jv">"${b.pnr}"</span>,
+  <span class="jk">"bookingId"</span>: <span class="jv">"${b.bookingId}"</span>,
+  <span class="jk">"flight"</span>: {
+    <span class="jk">"airline"</span>: <span class="jv">"${b.airline}"</span>, <span class="jk">"flightNumber"</span>: <span class="jv">"${b.flightNum}"</span>,
+    <span class="jk">"origin"</span>: <span class="jv">"${b.fromCode}"</span>, <span class="jk">"destination"</span>: <span class="jv">"${b.toCode}"</span>,
+    <span class="jk">"departureTime"</span>: <span class="jv">"${b.dep}"</span>, <span class="jk">"arrivalTime"</span>: <span class="jv">"${b.arr}"</span>,
+    <span class="jk">"duration"</span>: <span class="jv">"${b.dur}"</span>, <span class="jk">"stops"</span>: <span class="jn">${b.stops==='Non-stop'?0:1}</span>
+  },
+  <span class="jk">"passengers"</span>: [${b.passengers.map(p=>`{ <span class="jk">"name"</span>: <span class="jv">"${p.name}"</span>, <span class="jk">"seat"</span>: <span class="jv">"${p.seat}"</span>, <span class="jk">"status"</span>: <span class="jv">"${p.status}"</span> }`).join(', ')}],
+  <span class="jk">"fareInfo"</span>: { <span class="jk">"baseFare"</span>: <span class="jn">${b.baseFare}</span>, <span class="jk">"taxes"</span>: <span class="jn">${b.taxes}</span>, <span class="jk">"totalFare"</span>: <span class="jn">${b.total}</span>, <span class="jk">"refundable"</span>: <span class="js">${b.refundable}</span> },
+  <span class="jk">"insurance"</span>: { <span class="jk">"policyId"</span>: <span class="jv">"${b.insurancePolicyId}"</span>, <span class="jk">"status"</span>: <span class="jv">"${b.status==='cancelled'?'EXPIRED':'ACTIVE'}"</span> },
+  <span class="jk">"retrievedAt"</span>: <span class="jv">"${new Date().toISOString()}"</span>
+}`;
+}
+
+// ════════════════════════════════════════
+//  MODAL ACTIONS
+// ════════════════════════════════════════
+function openCancelModal(){document.getElementById('cancelModal').classList.add('open')}
+function openReschedule(){document.getElementById('rescheduleModal').classList.add('open')}
+function openBaggage(){document.getElementById('baggageModal').classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+function confirmCancel(){
+  closeModal('cancelModal');
+  if(currentBk){currentBk.status='cancelled';BOOKINGS[currentBk.pnr].status='cancelled';renderPNRResult(currentBk);}
+  showToast(`✅ Booking cancelled! Refund of ₹${(currentBk.total-1500).toLocaleString()} in 5–7 business days.`);
+}
+function confirmBaggage(){
+  const sel=document.getElementById('extraBag');
+  closeModal('baggageModal');
+  showToast(`✅ Extra baggage added: ${sel.value}`);
+}
+
+// ════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════
+function genPNR(){return Math.random().toString(36).substr(2,6).toUpperCase()}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500)}
+
+// INIT
+renderFlightCards();
+</script>
+</body>
+</html>
